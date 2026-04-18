@@ -61,7 +61,7 @@ export default function Contact() {
 
         {/* ── Section label ── */}
         <motion.div initial="hidden" animate={inView?'show':'hidden'} variants={fadeUp(0)} style={{marginBottom:'4rem'}}>
-          <span className="section-label">08 — Contact</span>
+          <span className="section-label">07 — Contact</span>
           <div className="section-divider" style={{marginTop:12}} />
         </motion.div>
 

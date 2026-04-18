@@ -87,6 +87,11 @@ const toolCategories = [
   { key: 'Dev',   label: 'Dev Tools', accent: '#111111' },
 ];
 
+const fadeUp = (d = 0) => ({
+  hidden: { opacity: 0, y: 24 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: d } },
+});
+
 function SkillCard({ name, index, isTool = false, description = "" }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -122,7 +127,6 @@ function SkillCard({ name, index, isTool = false, description = "" }) {
     >
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{ background: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, ${color}12, transparent)` }} />
-
       <div className={`relative z-10 flex ${isTool ? 'flex-col items-start text-left' : 'flex-col items-center text-center'} gap-4`}>
         <div className={`w-12 h-12 flex items-center justify-center rounded-xl bg-[#F4F2EE] group-hover:bg-white transition-colors duration-300 shadow-sm border border-transparent group-hover:border-[#E8E6E0]`}>
           {iconUrl ? (
@@ -176,10 +180,13 @@ export default function Skills() {
       <div className="absolute bottom-1/4 -left-24 w-96 h-96 bg-[#E8896F] opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
+        {/* ── Section label ── */}
+        <motion.div initial="hidden" animate={isInView ? 'show' : 'hidden'} variants={fadeUp(0)} style={{ marginBottom: '4rem' }}>
+          <span className="section-label">03 — Skills</span>
+          <div className="section-divider" style={{ marginTop: 12 }} />
+        </motion.div>
+
         <div className="flex flex-col items-center text-center mb-16">
-          <motion.span initial={{ opacity: 0, y: 10 }} animate={isInView ? { opacity: 1, y: 0 } : {}} className="section-label mb-4">
-            Capabilities
-          </motion.span>
           <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="font-display text-4xl md:text-6xl font-bold text-[#111111] mb-10">
             Engineering <span className="gradient-text italic font-normal">Intelligence.</span>
           </motion.h2>

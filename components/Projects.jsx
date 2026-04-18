@@ -292,7 +292,7 @@ export default function Projects() {
         {/* Section Header */}
         <div style={{ marginBottom: '6rem' }}>
           <motion.div initial="hidden" animate={inView ? 'show' : 'hidden'} variants={fadeUp(0)}>
-            <span className="section-label">05 — Projects</span>
+            <span className="section-label">04 — Projects</span>
             <div className="section-divider" style={{ margin: '16px 0 40px' }} />
           </motion.div>
 
