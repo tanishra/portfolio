@@ -77,8 +77,8 @@ graph TD
 ### 1. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/tanishra/ai-engineer-portfolio.git
-cd ai-engineer-portfolio
+git clone https://github.com/tanishra/portfolio.git
+cd portfolio
 
 # Install dependencies
 npm install
