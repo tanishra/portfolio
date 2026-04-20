@@ -2,10 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, PhoneOff, X, Cpu, Globe2, Zap } from 'lucide-react';
-import Vapi from '@vapi-ai/web';
+import { Room, RoomEvent } from 'livekit-client';
 
-const VAPI_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
-const VAPI_ASSISTANT_ID = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
 const CALL_LIMIT_SECONDS = 120;
 
 function SoundWave({ active }) {
@@ -29,43 +27,16 @@ export default function VoiceWidget() {
   const [callState, setCallState] = useState('idle'); // 'idle', 'connecting', 'active'
   const [timeLeft, setTimeLeft] = useState(CALL_LIMIT_SECONDS);
   
-  const vapiRef = useRef(null);
+  const roomRef = useRef(null);
   const timerRef = useRef(null);
 
-  useEffect(() => {
-    // Initialize Vapi instance
-    const vapi = new Vapi(VAPI_PUBLIC_KEY);
-    vapiRef.current = vapi;
-
-    vapi.on('call-start', () => {
-      setCallState('active');
-      startTimer();
-    });
-
-    vapi.on('call-end', () => {
-      setCallState('idle');
-      stopTimer();
-    });
-
-    vapi.on('error', (err) => {
-      console.error('Vapi Error:', err);
-      setCallState('idle');
-      stopTimer();
-    });
-
-    return () => {
-      if (vapiRef.current) vapiRef.current.stop();
-      stopTimer();
-    };
-  }, []);
-
   const startTimer = () => {
-    stopTimer(); // Clear any existing
+    stopTimer();
     setTimeLeft(CALL_LIMIT_SECONDS);
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          if (vapiRef.current) vapiRef.current.stop();
+          stopCall();
           return 0;
         }
         return prev - 1;
@@ -74,22 +45,63 @@ export default function VoiceWidget() {
   };
 
   const stopTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
   };
 
-  const toggleCall = (e) => {
-    e?.stopPropagation(); // Prevent modal interactions from interfering
+  const stopCall = async () => {
+    if (roomRef.current) {
+      await roomRef.current.disconnect();
+      roomRef.current = null;
+    }
+    setCallState('idle');
+    stopTimer();
+    window.dispatchEvent(new CustomEvent('vapi-end'));
+  };
+
+  const toggleCall = async (e) => {
+    e?.stopPropagation();
     if (callState === 'active' || callState === 'connecting') {
-      if (vapiRef.current) vapiRef.current.stop();
-      setCallState('idle');
-      stopTimer();
-    } else {
-      if (!vapiRef.current) return;
+      await stopCall();
+      return;
+    }
+
+    try {
       setCallState('connecting');
-      vapiRef.current.start(VAPI_ASSISTANT_ID);
+      
+      const res = await fetch('/api/friday-token', { method: 'POST' });
+      if (!res.ok) throw new Error("Failed to reach Token Bridge");
+      const { token, livekit_url } = await res.json();
+
+      const room = new Room();
+      roomRef.current = room;
+
+      room.on(RoomEvent.TrackSubscribed, (track) => {
+        if (track.kind === 'audio') track.attach();
+      });
+
+      room.on(RoomEvent.DataReceived, (payload) => {
+        try {
+          const data = JSON.parse(new TextDecoder().decode(payload));
+          if (data.type === 'NAVIGATE') {
+            const el = document.getElementById(data.section.toLowerCase());
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        } catch (e) { console.error("Friday data error:", e); }
+      });
+
+      await room.connect(livekit_url, token);
+      
+      // Explicitly enable and publish the microphone
+      await room.localParticipant.setMicrophoneEnabled(true);
+      
+      setCallState('active');
+      startTimer();
+      window.dispatchEvent(new CustomEvent('vapi-start'));
+
+    } catch (err) {
+      console.error("Friday error:", err);
+      setCallState('idle');
     }
   };
 
@@ -101,7 +113,6 @@ export default function VoiceWidget() {
 
   return (
     <>
-      {/* Floating Toggle Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
@@ -136,7 +147,6 @@ export default function VoiceWidget() {
           )}
         </AnimatePresence>
 
-        {/* Pulse effect when call is active but window is closed */}
         {callState === 'active' && !isOpen && (
           <motion.div
             initial={{ scale: 1, opacity: 0.5 }}
@@ -147,7 +157,6 @@ export default function VoiceWidget() {
         )}
       </motion.button>
 
-      {/* Widget Modal */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -167,21 +176,18 @@ export default function VoiceWidget() {
               overflow: 'hidden',
             }}
           >
-            {/* Header */}
             <div style={{ background: '#111111', padding: '1.25rem', display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(196,97,74,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Cpu size={16} color="#C4614A" />
               </div>
               <div>
                 <p style={{ fontFamily: 'Fraunces', fontWeight: 600, fontSize: '0.95rem', color: '#FAFAF8', margin: 0 }}>Friday</p>
-                <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.55rem', color: '#A3A3A3', margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em' }}>AI Persona</p>
+                <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.55rem', color: '#A3A3A3', margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em' }}>AI Assistant</p>
               </div>
             </div>
 
-            {/* Body */}
             <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100px', height: '100px' }}>
-                {/* Pulse Rings */}
                 {callState === 'active' && [1, 2].map((i) => (
                   <motion.div
                     key={i}
@@ -190,7 +196,7 @@ export default function VoiceWidget() {
                       inset: 0, 
                       borderRadius: '50%', 
                       border: '1px solid #C4614A',
-                      pointerEvents: 'none', // IMPORTANT: Ensures button remains clickable
+                      pointerEvents: 'none',
                       zIndex: 1
                     }}
                     initial={{ scale: 1, opacity: 0.4 }}
@@ -202,7 +208,7 @@ export default function VoiceWidget() {
                   onClick={toggleCall}
                   style={{
                     position: 'relative',
-                    zIndex: 10, // Higher than rings
+                    zIndex: 10,
                     width: '80px',
                     height: '80px',
                     borderRadius: '50%',
@@ -226,7 +232,7 @@ export default function VoiceWidget() {
                 <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', color: callState === 'active' ? '#C4614A' : '#A3A3A3', marginTop: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
                   {callState === 'idle' && 'Click to start'}
                   {callState === 'connecting' && 'Connecting...'}
-                  {callState === 'active' && `Disconnect in ${formatTime(timeLeft)}`}
+                  {callState === 'active' && `Friday Listening... ${formatTime(timeLeft)}`}
                 </p>
               </div>
 
@@ -239,7 +245,7 @@ export default function VoiceWidget() {
                 </div>
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <Zap size={12} color="#C4614A" />
-                  <span style={{ fontSize: '0.65rem', color: '#525252', fontFamily: 'Inter' }}>Fast Response</span>
+                  <span style={{ fontSize: '0.65rem', color: '#525252', fontFamily: 'Inter' }}>Autonomous</span>
                 </div>
               </div>
             </div>
