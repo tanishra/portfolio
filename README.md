@@ -29,12 +29,12 @@
 ## Core Capabilities
 This portfolio is engineered to move beyond static documentation, serving as a live environment for **latency optimization, observability, and systems architecture**:
 
-*   🎙️ **"Friday" Voice Persona:** A globally persistent real-time AI assistant built on Vapi and LiveKit. Features sub-second response times, bilingual support (EN/HI), and an autonomous task-execution roadmap.
-*   📜 **Temporal Engineering Log:** A redesigned experience architecture utilizing a vertical "Stack DNA" rail and sticky markers to visualize technology evolution over time.
-*   🧊 **Cinema Hero Gallery:** Full-visibility project deep-dives with brand-accurate technical tagging and vertical-stacked modal layouts.
-*   🌡️ **Activity Heatmap:** Live data-driven activity tracking via GitHub API, styled with a signature terracotta palette and a persistent zero-setup hit counter.
-*   ⚡ **Performance-First Design:** GPU-accelerated rendering and hardware-optimized CSS to ensure zero-stutter interactions and high-frame-rate animations.
-*   ✉️ **Secure Communication:** Production-ready contact API powered by Resend, featuring professional notification templates for direct recruitment inquiries.
+*   **(Friday)[https://www.github.com/tanishra/friday] Voice Persona:** A real-time AI assistant built using LiveKit, deepgram and openai. Features sub-second response times, bilingual support (EN/HI), and an autonomous task-execution roadmap.
+*   **Temporal Engineering Log:** A redesigned experience architecture utilizing a vertical "Stack DNA" rail and sticky markers to visualize technology evolution over time.
+*   **Cinema Hero Gallery:** Full-visibility project deep-dives with brand-accurate technical tagging and vertical-stacked modal layouts.
+*   **Activity Heatmap:** Live data-driven activity tracking via GitHub API, styled with a signature terracotta palette and a persistent zero-setup hit counter.
+*   **Performance-First Design:** GPU-accelerated rendering and hardware-optimized CSS to ensure zero-stutter interactions and high-frame-rate animations.
+*   **Secure Communication:** Production-ready contact API powered by Resend, featuring professional notification templates for direct recruitment inquiries.
 
 ---
 
