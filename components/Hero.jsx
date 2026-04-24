@@ -263,8 +263,8 @@ export default function Hero() {
             className="font-body text-base leading-relaxed mb-10 max-w-xl"
             style={{ color: 'var(--text-secondary)' }}
           >
-            AI Engineer at{' '}
-            <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>QualtechEdge</span>{' '}
+            AI Engineer {' '}
+            {/* <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>QualtechEdge</span>{' '} */}
             — building LLM systems, voice agents, and RAG pipelines from first principles.
             No frameworks. Full control. Obsessed with making AI work{' '}
             <em style={{ color: 'var(--text-primary)' }}>in production</em>.
