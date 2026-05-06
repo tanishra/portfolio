@@ -84,7 +84,19 @@ export default function Experience() {
                   <div className="flex flex-wrap items-center gap-4 mb-6">
                     <div className="flex items-center gap-3">
                       <CompanyLogo url={exp.logoUrl} name={exp.company} />
-                      <span className="font-body font-bold text-lg text-[#111111]">{exp.company}</span>
+                      {exp.companyUrl ? (
+                        <a
+                          href={exp.companyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-body font-bold text-lg text-[#111111]"
+                          style={{ textDecoration: 'none' }}
+                        >
+                          {exp.company}
+                        </a>
+                      ) : (
+                        <span className="font-body font-bold text-lg text-[#111111]">{exp.company}</span>
+                      )}
                     </div>
                     {exp.current && <span className="text-[#E8E6E0]">/</span>}
                     {exp.current && (
