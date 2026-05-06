@@ -22,16 +22,23 @@ function LI() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="cur
 function VisitorCounter() {
   const [count, setCount] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch('/api/visitor-count', { method: 'POST' })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error('Visitor counter unavailable');
+        return r.json();
+      })
       .then((d) => {
         if (d.count !== undefined && d.count !== null) {
           setCount(Number(d.count));
         }
       })
-      .catch((err) => console.error('Visitor count error:', err))
+      .catch((err) => {
+        console.error('Visitor count error:', err);
+        setError(true);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -55,6 +62,8 @@ function VisitorCounter() {
       }}>
         {loading ? (
           <span style={{ color: 'var(--text-muted)' }}>...</span>
+        ) : error ? (
+          <span style={{ color: 'var(--text-muted)' }}>Views unavailable</span>
         ) : count !== null ? (
           <><span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{count.toLocaleString()}</span> Views</>
         ) : (
