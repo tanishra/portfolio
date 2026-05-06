@@ -94,6 +94,11 @@ NEXT_PUBLIC_VAPI_ASSISTANT_ID=your_assistant_id
 # Contact System
 RESEND_API_KEY=re_your_resend_key
 CONTACT_EMAIL=your_email@example.com
+
+# Experience Company Links
+NEXT_PUBLIC_QUALTECHEDGE_URL=https://www.qualtechedge.ai
+NEXT_PUBLIC_OUTLIER_AI_URL=https://outlier.ai
+NEXT_PUBLIC_MICROSOFT_URL=https://www.microsoft.com/en-in
 ```
 
 ### 3. Execution
