@@ -1,30 +1,46 @@
 import { NextResponse } from 'next/server';
 
-/**
- * Visitor counter using dwyl hits API (Zero Setup).
- */
+export const dynamic = 'force-dynamic';
+
+const BADGE_URL = 'https://visitor-badge.laobi.icu/badge?page_id=tanishra.portfolio';
+
+async function fetchVisitorCount() {
+  const res = await fetch(BADGE_URL, {
+    method: 'GET',
+    headers: {
+      Accept: 'image/svg+xml,text/plain,*/*',
+      'User-Agent': 'tanish-portfolio-visitor-counter',
+    },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Badge counter request failed: ${res.status} ${body}`);
+  }
+
+  const svg = await res.text();
+  const matches = [...svg.matchAll(/<text\b[^>]*>([\d,]+)<\/text>/g)];
+  const countText = matches.at(-1)?.[1]?.replace(/,/g, '');
+  const count = Number(countText);
+
+  if (!Number.isFinite(count)) {
+    throw new Error('Badge counter response did not include a numeric count');
+  }
+
+  return count;
+}
+
 export async function POST() {
   try {
-    // We use a unique key for your portfolio
-    const identifier = 'tanish-rajput-portfolio-v1';
-    
-    const res = await fetch(`https://hits.dwyl.com/tanishra/${identifier}.json`, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' },
-      cache: 'no-store'
-    });
-
-    if (!res.ok) throw new Error('Counter service unavailable');
-
-    const data = await res.json();
-    
-    // The dwyl API returns the count in the 'message' field as a string
-    const count = parseInt(data.message, 10) || 0;
-
+    const count = await fetchVisitorCount();
     return NextResponse.json({ count });
   } catch (err) {
     console.error('[Visitor Counter Error]:', err.message);
-    return NextResponse.json({ count: 0 }, { status: 200 });
+    return NextResponse.json(
+      { error: 'Visitor counter unavailable' },
+      { status: 503 }
+    );
   }
 }
 
