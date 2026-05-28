@@ -78,73 +78,76 @@ function ExpandModal({ project, onClose }) {
             background: '#FAFAF8',
             borderRadius: 32,
             overflow: 'hidden',
-            display: 'flex', flexDirection: 'column',
             boxShadow: '0 40px 100px rgba(0,0,0,0.4)',
             border: '1px solid #E8E6E0',
           }}
         >
-          {/* Hero Visual Header */}
-          <div style={{ position: 'relative', height: '45%', flexShrink: 0, background: '#000' }}>
-            <ProjectImage src={project.image} alt={project.name} style={{ opacity: 0.9 }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #FAFAF8 0%, transparent 60%)' }} />
-            
-            {/* Header Controls */}
-            <div style={{ position: 'absolute', top: 24, left: 32, right: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
-              <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', overflow: 'hidden' }}>
+            {/* Hero Visual Header */}
+            <div style={{ position: 'relative', height: '45%', flexShrink: 0, background: '#000' }}>
+              <ProjectImage src={project.image} alt={project.name} style={{ opacity: 0.9 }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #FAFAF8 0%, transparent 60%)' }} />
+              
+              {/* Header Controls */}
+              <div style={{ position: 'absolute', top: 24, left: 32, right: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
+                <div style={{ display: 'flex', gap: 12 }}>
+                </div>
+                <button onClick={onClose} style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
+                  <X size={20} />
+                </button>
               </div>
-              <button onClick={onClose} style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
-                <X size={20} />
-              </button>
-            </div>
 
-            {/* Title Overlay */}
-            <div style={{ position: 'absolute', bottom: 0, left: 32, right: 32, paddingBottom: 24 }}>
-              <h2 className="font-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, color: '#111111', lineHeight: 1 }}>
-                {project.name}
-              </h2>
-              <p style={{ fontFamily: 'Inter', fontSize: '1rem', color: '#C4614A', fontWeight: 500, marginTop: 12 }}>
-                {project.tagline}
-              </p>
-            </div>
-          </div>
-
-          {/* Content Area */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: '40px 32px', display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 48 }}>
-            {/* Main Info */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-              <div>
-                <h4 style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: '#A3A3A3', fontFamily: 'JetBrains Mono', marginBottom: 16 }}>Description</h4>
-                <p style={{ fontSize: '1.05rem', color: '#525252', lineHeight: 1.8, fontFamily: 'Inter' }}>
-                  {project.description}
+              {/* Title Overlay */}
+              <div style={{ position: 'absolute', bottom: 0, left: 32, right: 32, paddingBottom: 24 }}>
+                <h2 className="font-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, color: '#111111', lineHeight: 1 }}>
+                  {project.name}
+                </h2>
+                <p style={{ fontFamily: 'Inter', fontSize: '1rem', color: '#C4614A', fontWeight: 500, marginTop: 12 }}>
+                  {project.tagline}
                 </p>
               </div>
-
-              <div style={{ display: 'flex', gap: 16 }}>
-                {project.github && (
-                  <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', background: '#C4614A', color: '#FFF', borderRadius: 14, textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem' }}>
-                    <Github size={18} /> Source Code <ArrowUpRight size={14} />
-                  </a>
-                )}
-                {project.demo && (
-                  <a href={project.demo} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', background: 'transparent', color: '#111111', border: '1px solid #E8E6E0', borderRadius: 14, textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem' }}>
-                    <ExternalLink size={18} /> Live System
-                  </a>
-                )}
-              </div>
             </div>
 
-            {/* Sidebar Specs */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-              <div>
-                <h4 style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: '#A3A3A3', fontFamily: 'JetBrains Mono', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Terminal size={14} /> System Stack
-                </h4>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                  {project.tech.map(t => (
-                    <span key={t} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(196,97,74,0.05)', color: '#C4614A', border: '1px solid rgba(196,97,74,0.1)', fontSize: '0.75rem', fontFamily: 'JetBrains Mono', fontWeight: 500 }}>
-                      {t}
-                    </span>
-                  ))}
+            {/* Content Area */}
+            <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '40px 32px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 48 }}>
+                {/* Main Info */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+                  <div>
+                    <h4 style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: '#A3A3A3', fontFamily: 'JetBrains Mono', marginBottom: 16 }}>Description</h4>
+                    <p style={{ fontSize: '1.05rem', color: '#525252', lineHeight: 1.8, fontFamily: 'Inter' }}>
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: 16 }}>
+                    {project.github && (
+                      <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', background: '#C4614A', color: '#FFF', borderRadius: 14, textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem' }}>
+                        <Github size={18} /> Source Code <ArrowUpRight size={14} />
+                      </a>
+                    )}
+                    {project.demo && (
+                      <a href={project.demo} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', background: 'transparent', color: '#111111', border: '1px solid #E8E6E0', borderRadius: 14, textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem' }}>
+                        <ExternalLink size={18} /> Live System
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Sidebar Specs */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+                  <div>
+                    <h4 style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: '#A3A3A3', fontFamily: 'JetBrains Mono', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <Terminal size={14} /> System Stack
+                    </h4>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                      {project.tech.map(t => (
+                        <span key={t} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(196,97,74,0.05)', color: '#C4614A', border: '1px solid rgba(196,97,74,0.1)', fontSize: '0.75rem', fontFamily: 'JetBrains Mono', fontWeight: 500 }}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
