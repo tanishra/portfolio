@@ -7,6 +7,19 @@ import { Room, RoomEvent } from 'livekit-client';
 const fadeUp = (d=0) => ({ hidden:{opacity:0,y:24}, show:{opacity:1,y:0,transition:{duration:0.7,ease:[0.16,1,0.3,1],delay:d}} });
 const CALL_LIMIT_SECONDS = 120;
 
+const BOOTSTRAP_LOGS = [
+  "Waking up Friday from her slumber...",
+  "Stretching her virtual neural networks...",
+  "Brewing a cup of virtual coffee...",
+  "Tuning vocal cords for perfect pitch...",
+  "Opening vocabulary folders...",
+  "Reviewing Tanish's project logs...",
+  "Setting up bilingual translation...",
+  "Powering up the vocal reactors...",
+  "Polishing her smart responses...",
+  "Ready to chat! Connecting line..."
+];
+
 function SoundWave({ active }) {
   const bars=[0.4,0.7,1,0.6,0.9,0.5,0.8,0.45,0.75,0.55,0.85,0.6];
   return (
@@ -27,8 +40,23 @@ export default function VoiceAgent() {
   
   const [callState, setCallState] = useState('idle'); // 'idle', 'connecting', 'active'
   const [timeLeft, setTimeLeft] = useState(CALL_LIMIT_SECONDS);
+  const [logIndex, setLogIndex] = useState(0);
   
   const roomRef = useRef(null);
+
+  useEffect(() => {
+    if (callState !== 'connecting') {
+      setLogIndex(0);
+      return;
+    }
+    const interval = setInterval(() => {
+      setLogIndex((prev) => {
+        if (prev < BOOTSTRAP_LOGS.length - 1) return prev + 1;
+        return prev;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [callState]);
   const timerRef = useRef(null);
 
   const startTimer = () => {
@@ -161,14 +189,58 @@ export default function VoiceAgent() {
               </div>
 
               <div style={{width:'100%', display:'flex', flexDirection:'column', alignItems:'center', gap:16}}>
-                <SoundWave active={callState === 'active'}/>
-                <div style={{textAlign:'center'}}>
-                  <p style={{fontFamily:'JetBrains Mono',fontSize:'0.7rem',color:callState === 'active' ? '#C4614A' : '#A3A3A3',textTransform:'uppercase',letterSpacing:'0.1em',fontWeight:600, margin:0}}>
-                    {callState === 'idle' && 'Click to Start Conversation'}
-                    {callState === 'connecting' && 'Establishing Connection...'}
-                    {callState === 'active' && `Friday Listening... ${formatTime(timeLeft)}`}
-                  </p>
-                </div>
+                {callState === 'connecting' ? (
+                  <div style={{
+                    fontFamily: 'JetBrains Mono',
+                    fontSize: '0.6rem',
+                    background: '#111111',
+                    color: '#FAFAF8',
+                    padding: '16px',
+                    borderRadius: '16px',
+                    textAlign: 'left',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    border: '1px solid rgba(196,97,74,0.15)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px', marginBottom: '4px' }}>
+                      <span style={{ color: '#C4614A', fontWeight: 800, fontSize: '0.55rem', letterSpacing: '0.05em' }}>BOOTSTRAP SEQUENCE</span>
+                      <span className="animate-pulse" style={{ color: '#A3A3A3', fontSize: '0.5rem' }}>ACTIVE</span>
+                    </div>
+                    {BOOTSTRAP_LOGS.slice(Math.max(0, logIndex - 2), logIndex + 1).map((log, idx) => {
+                      const absoluteIdx = Math.max(0, logIndex - 2) + idx;
+                      const isDone = absoluteIdx < logIndex;
+                      return (
+                        <div key={idx} style={{ display: 'flex', gap: '8px', alignItems: 'center', opacity: isDone ? 0.35 : 1 }}>
+                          <span style={{ color: isDone ? '#22C55E' : '#C4614A', fontWeight: 900 }}>
+                            {isDone ? '✔' : '❯'}
+                          </span>
+                          <span style={{ color: isDone ? '#A3A3A3' : '#FAFAF8' }}>
+                            {log}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    {logIndex === BOOTSTRAP_LOGS.length - 1 && (
+                      <div style={{ color: '#C4614A', fontStyle: 'italic', fontSize: '0.52rem', marginTop: '4px', display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        <span className="animate-spin" style={{ display: 'inline-block' }}>⚙</span> Waking up Space... Please wait
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    <SoundWave active={callState === 'active'}/>
+                    <div style={{textAlign:'center'}}>
+                      <p style={{fontFamily:'JetBrains Mono',fontSize:'0.7rem',color:callState === 'active' ? '#C4614A' : '#A3A3A3',textTransform:'uppercase',letterSpacing:'0.1em',fontWeight:600, margin:0}}>
+                        {callState === 'idle' && 'Click to Start Conversation'}
+                        {callState === 'active' && `Friday Listening... ${formatTime(timeLeft)}`}
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
