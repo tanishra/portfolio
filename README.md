@@ -43,7 +43,7 @@ The system utilizes a "Stateless UI / Stateful Intelligence" architecture to min
 
 ```mermaid
 graph TD
-    UI[Next.js Frontend] -- POST --> TB[/api/friday-token Bridge]
+    UI[Next.js Frontend] -- POST --> TB["/api/friday-token Bridge"]
     TB --> BE[Friday Backend]
     UI -- WebRTC --> LK[LiveKit Room]
     
