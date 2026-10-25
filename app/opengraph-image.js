@@ -16,7 +16,7 @@ export default async function Image() {
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          background: '#080B12',
+          background: '#FAFAF8',
           padding: '80px',
           fontFamily: 'sans-serif',
           position: 'relative',
@@ -29,7 +29,7 @@ export default async function Image() {
             position: 'absolute',
             inset: 0,
             backgroundImage:
-              'linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)',
+              'linear-gradient(rgba(196,97,74,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(196,97,74,0.05) 1px, transparent 1px)',
             backgroundSize: '60px 60px',
           }}
         />
@@ -43,7 +43,7 @@ export default async function Image() {
             width: 400,
             height: 400,
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(196,97,74,0.10) 0%, transparent 70%)',
           }}
         />
         <div
@@ -54,7 +54,7 @@ export default async function Image() {
             width: 300,
             height: 300,
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(232,137,111,0.10) 0%, transparent 70%)',
           }}
         />
 
@@ -69,8 +69,8 @@ export default async function Image() {
               marginBottom: 8,
             }}
           >
-            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#10B981' }} />
-            <span style={{ fontFamily: 'monospace', fontSize: 14, color: '#6B7280', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#2D7D52' }} />
+            <span style={{ fontFamily: 'monospace', fontSize: 14, color: '#A3A3A3', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
               AI Engineer · Available
             </span>
           </div>
@@ -81,14 +81,14 @@ export default async function Image() {
               fontSize: 80,
               fontWeight: 800,
               lineHeight: 1,
-              color: '#F0F4FF',
+              color: '#111111',
               letterSpacing: '-2px',
             }}
           >
             Tanish{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #00D4FF, #7C3AED)',
+                background: 'linear-gradient(135deg, #C4614A, #9E4A36)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}
@@ -98,21 +98,21 @@ export default async function Image() {
           </div>
 
           {/* Role */}
-          <div style={{ fontSize: 28, color: '#9CA3AF', fontWeight: 400, marginTop: 4 }}>
+          <div style={{ fontSize: 28, color: '#525252', fontWeight: 400, marginTop: 4 }}>
             Building LLM systems · Voice agents · RAG pipelines
           </div>
 
           {/* Tags */}
           <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-            {['Python', 'LangGraph', 'FastAPI', 'Next.js', 'Groq', 'ElevenLabs'].map((tag) => (
+            {['Python', 'LangGraph', 'FastAPI', 'Next.js', 'LiveKit', 'Deepgram'].map((tag) => (
               <div
                 key={tag}
                 style={{
                   padding: '6px 14px',
                   borderRadius: 8,
-                  border: '1px solid rgba(0,212,255,0.25)',
-                  background: 'rgba(0,212,255,0.08)',
-                  color: '#00D4FF',
+                  border: '1px solid rgba(196,97,74,0.25)',
+                  background: 'rgba(196,97,74,0.08)',
+                  color: '#C4614A',
                   fontFamily: 'monospace',
                   fontSize: 14,
                 }}
@@ -131,10 +131,10 @@ export default async function Image() {
             right: 80,
             fontFamily: 'monospace',
             fontSize: 18,
-            color: '#374151',
+            color: '#A3A3A3',
           }}
         >
-          tanish.dev
+          tanishrajput.dev
         </div>
 
         {/* Corner T logo */}
@@ -146,14 +146,14 @@ export default async function Image() {
             width: 60,
             height: 60,
             borderRadius: 14,
-            background: 'linear-gradient(135deg, rgba(0,212,255,0.15), rgba(124,58,237,0.15))',
-            border: '1px solid rgba(0,212,255,0.3)',
+            background: 'linear-gradient(135deg, rgba(196,97,74,0.15), rgba(158,74,54,0.15))',
+            border: '1px solid rgba(196,97,74,0.3)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: 28,
             fontWeight: 900,
-            color: '#00D4FF',
+            color: '#C4614A',
           }}
         >
           T

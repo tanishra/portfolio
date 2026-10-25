@@ -92,7 +92,6 @@ export default function VoiceWidget() {
     }
     setCallState('idle');
     stopTimer();
-    window.dispatchEvent(new CustomEvent('vapi-end'));
   };
 
   const toggleCall = async (e) => {
@@ -133,7 +132,6 @@ export default function VoiceWidget() {
       
       setCallState('active');
       startTimer();
-      window.dispatchEvent(new CustomEvent('vapi-start'));
 
     } catch (err) {
       console.error("Friday error:", err);

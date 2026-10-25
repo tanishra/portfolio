@@ -78,28 +78,6 @@ function ThreeCanvas() {
         mesh3 = new THREE.Mesh(geo3, mat3);
         scene.add(mesh3);
 
-        /* ── Original Design: Icosahedron Wireframe (Commented) ──
-        const geo = new THREE.IcosahedronGeometry(1.8, 1);
-        const mat = new THREE.MeshBasicMaterial({
-          color: 0xC4614A,
-          wireframe: true,
-          transparent: true,
-          opacity: 0.35, 
-        });
-        mesh = new THREE.Mesh(geo, mat);
-        scene.add(mesh);
-
-        const geo2 = new THREE.IcosahedronGeometry(2.6, 1);
-        const mat2 = new THREE.MeshBasicMaterial({
-          color: 0x111111,
-          wireframe: true,
-          transparent: true,
-          opacity: 0.12,
-        });
-        mesh2 = new THREE.Mesh(geo2, mat2);
-        scene.add(mesh2);
-        */
-
         let mouseX = 0, mouseY = 0;
         const onMouse = (e) => {
           mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;

@@ -1,8 +1,6 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 // ── Rate limiting: simple in-memory map (resets on cold start)
 const rateMap = new Map();
 const RATE_LIMIT = 3;       // max requests
@@ -67,6 +65,7 @@ export async function POST(request) {
     }
 
     // ── Send email via Resend (to you)
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: 'Tanish Portfolio <contact@tanish.website>', 
       to: [process.env.CONTACT_EMAIL || 'tanishrajput9@gmail.com'], 

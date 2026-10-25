@@ -103,7 +103,6 @@ function SkillCard({ name, index, isTool = false, description = "" }) {
   
   const iconUrl = useMemo(() => {
     if (imgError) return null;
-    if (meta.sk) return `https://skillicons.dev/icons?i=${meta.sk}`;
     if (meta.si) return `https://cdn.simpleicons.org/${meta.si}/${(meta.color || '111111').replace('#','')}`;
     if (meta.icon) return `https://api.iconify.design/${meta.icon}.svg`;
     return null;
@@ -236,7 +235,7 @@ export default function Skills() {
               {marqueeItems.map((name, i) => {
                  const meta = techMeta[name];
                  const color = meta?.color || '#525252';
-                 const iconUrl = meta?.sk ? `https://skillicons.dev/icons?i=${meta.sk}` : (meta?.si ? `https://cdn.simpleicons.org/${meta.si}/${(meta.color || '111111').replace('#','')}` : (meta?.icon ? `https://api.iconify.design/${meta.icon}.svg` : null));
+                 const iconUrl = meta?.si ? `https://cdn.simpleicons.org/${meta.si}/${(meta.color || '111111').replace('#','')}` : (meta?.icon ? `https://api.iconify.design/${meta.icon}.svg` : null);
                  return (
                    <div key={`${name}-${i}`} className="flex items-center gap-3 mx-8 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default">
                      {iconUrl ? <img src={iconUrl} alt={name} className="w-5 h-5" /> : <div className="w-5 h-5 rounded bg-[#D4D2CE] flex items-center justify-center text-[10px] font-bold" style={{ color }}>{meta?.letter || name.charAt(0)}</div>}

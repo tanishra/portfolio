@@ -1,21 +1,14 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ExternalLink, Star, ArrowUpRight, X, Maximize2, Image as ImageIcon, Github, Terminal } from 'lucide-react';
+import { motion, useInView, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { ExternalLink, ArrowUpRight, X, Maximize2, Image as ImageIcon, Github, Terminal } from 'lucide-react';
 import { projects } from '../lib/data';
 
 const fadeUp = (d = 0) => ({
   hidden: { opacity: 0, y: 32 },
   show:   { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: d } },
 });
-
-const statusConfig = {
-  Active:        { color: '#2D7D52', bg: '#F0FAF5', border: 'rgba(45,125,82,0.2)',  pulse: true  },
-  'In Progress': { color: '#92400E', bg: '#FEF9F0', border: 'rgba(146,64,14,0.2)', pulse: true  },
-  Architecture:  { color: '#525252', bg: '#F5F5F5', border: 'rgba(82,82,82,0.2)',  pulse: false },
-  Complete:      { color: '#1D4ED8', bg: '#EFF6FF', border: 'rgba(29,78,216,0.2)', pulse: false },
-};
 
 function ProjectImage({ src, alt, className = "", style = {} }) {
   const [error, setError] = useState(false);
@@ -38,8 +31,6 @@ function ProjectImage({ src, alt, className = "", style = {} }) {
 
 // ── Expand Modal ────────────────────────────────────────────────
 function ExpandModal({ project, onClose }) {
-  const status = statusConfig[project.status] || statusConfig['Active'];
-
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handler);
@@ -161,8 +152,7 @@ function ExpandModal({ project, onClose }) {
 // ── Project Card ───────────────────
 function ProjectCard({ project, index, onOpen, inView }) {
   const [hovered, setHovered] = useState(false);
-  const status = statusConfig[project.status]  || statusConfig['Active'];
-  
+
   // Spotlight effect
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -220,23 +210,7 @@ function ProjectCard({ project, index, onOpen, inView }) {
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.4))' }} />
 
-        {/* Featured badge */}
-        {/* {project.featured && (
-          <div style={{ position: 'absolute', top: 16, left: 16, display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 99, background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', zIndex: 1 }}>
-            <Star size={10} className="text-amber-500 fill-amber-500" />
-            <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.6rem', color: '#111', fontWeight: 600 }}>Featured</span>
-          </div>
-        )} */}
-
-        {/* Status badge */}
-        {/* <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 1 }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 99, fontFamily: 'JetBrains Mono', fontSize: '0.6rem', color: status.color, background: status.bg, border: `1px solid ${status.border}`, fontWeight: 600 }}>
-            {status.pulse && <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />}
-            {project.status}
-          </span>
-        </div> */}
-
-        <motion.div 
+        <motion.div
           animate={{ 
             opacity: hovered ? 1 : 0, 
             y: hovered ? 0 : 10,

@@ -6,14 +6,14 @@
     <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
       <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
     </a>
-    <a href="https://vapi.ai/" target="_blank" rel="noreferrer">
-      <img src="https://img.shields.io/badge/Vapi.ai-FF4F00?style=for-the-badge&logo=openai&logoColor=white" alt="Vapi" />
+    <a href="https://livekit.io/" target="_blank" rel="noreferrer">
+      <img src="https://img.shields.io/badge/LiveKit-002CF2?style=for-the-badge&logo=livekit&logoColor=white" alt="LiveKit" />
     </a>
     <a href="https://langchain.com/" target="_blank" rel="noreferrer">
       <img src="https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain" />
     </a>
-    <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
-      <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <a href="https://threejs.org/" target="_blank" rel="noreferrer">
+      <img src="https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Three.js" />
     </a>
     <a href="https://framer.com/motion" target="_blank" rel="noreferrer">
       <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
@@ -29,10 +29,10 @@
 ## Core Capabilities
 This portfolio is engineered to move beyond static documentation, serving as a live environment for **latency optimization, observability, and systems architecture**:
 
-*   **[Friday](https://github.com/tanishra/friday)** Voice Persona: A real-time AI assistant built using LiveKit, Deepgram and OpenAI. Features sub-second response times, bilingual support (EN/HI), and an autonomous task-execution roadmap.
-*   **Temporal Engineering Log:** A redesigned experience architecture utilizing a vertical "Stack DNA" rail and sticky markers to visualize technology evolution over time.
+*   **[Friday](https://github.com/tanishra/friday)** Voice Persona: A real-time AI assistant built using LiveKit, Deepgram and OpenAI. Features sub-second response times, bilingual support (EN/HI), and remote site navigation — Friday can scroll the page via LiveKit data channels.
+*   **Experience Timeline:** Sticky year markers with a vertical "Stack DNA" rail mapping each role to its technology stack.
 *   **Cinema Hero Gallery:** Full-visibility project deep-dives with brand-accurate technical tagging and vertical-stacked modal layouts.
-*   **Activity Heatmap:** Live data-driven activity tracking via GitHub API, styled with a signature terracotta palette and a persistent zero-setup hit counter.
+*   **Activity Heatmap:** Live data-driven activity tracking via GitHub contribution data, styled with a signature terracotta palette and a persistent zero-setup hit counter.
 *   **Performance-First Design:** GPU-accelerated rendering and hardware-optimized CSS to ensure zero-stutter interactions and high-frame-rate animations.
 *   **Secure Communication:** Production-ready contact API powered by Resend, featuring professional notification templates for direct recruitment inquiries.
 
@@ -43,17 +43,21 @@ The system utilizes a "Stateless UI / Stateful Intelligence" architecture to min
 
 ```mermaid
 graph TD
-    UI[Next.js Frontend] -- WebSocket --> Vapi[Friday Voice Assistant]
+    UI[Next.js Frontend] -- POST --> TB[/api/friday-token Bridge]
+    TB --> BE[Friday Backend]
+    UI -- WebRTC --> LK[LiveKit Room]
     
     subgraph Voice Pipeline
-    Vapi --> DG[Deepgram STT]
-    DG --> LLM[Groq / Llama 3.1]
-    LLM --> EL[ElevenLabs TTS]
+    LK --> Agent[Friday Agent]
+    Agent --> DG[Deepgram STT]
+    DG --> LLM[LLM]
+    LLM --> TTS[TTS]
+    Agent -- Data Channel --> UI
     end
     
     subgraph System Data
     UI --> GH[GitHub Contributions API]
-    UI --> Dwyl[Persistent Hit Counter]
+    UI --> VC[Visitor Badge Counter]
     end
     
     subgraph Communications
@@ -65,9 +69,9 @@ graph TD
 ---
 
 ## Tech Stack
-*   **Frontend:** Next.js 14 (App Router), React 18, Tailwind CSS, Framer Motion.
-*   **AI/Intelligence:** Vapi (Orchestration), Deepgram (STT), ElevenLabs (TTS), Groq/OpenAI (LLMs).
-*   **Infrastructure:** Resend (SMTP), Vercel (CD/CI), Dwyl Hits (Analytics).
+*   **Frontend:** Next.js 14 (App Router), React 18, Tailwind CSS, Framer Motion, Three.js, Lenis.
+*   **AI/Intelligence:** LiveKit (Realtime transport), Deepgram (STT), ElevenLabs (TTS), OpenAI (LLMs).
+*   **Infrastructure:** Resend (SMTP), Vercel (CD/CI), Visitor Badge (Analytics).
 *   **Design Tokens:** Fraunces (Display), Inter (Sans), JetBrains Mono (Technical).
 
 ---
@@ -87,9 +91,8 @@ npm install
 ### 2. Environment Configuration
 Create a `.env` file in the root directory:
 ```env
-# Voice Agent
-NEXT_PUBLIC_VAPI_PUBLIC_KEY=your_vapi_key
-NEXT_PUBLIC_VAPI_ASSISTANT_ID=your_assistant_id
+# Voice Agent (Friday backend that mints LiveKit tokens)
+FRIDAY_BACKEND_URL=your_friday_backend_url
 
 # Contact System
 RESEND_API_KEY=re_your_resend_key

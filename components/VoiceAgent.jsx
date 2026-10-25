@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { Mic, PhoneOff, Cpu } from 'lucide-react';
 import { Room, RoomEvent } from 'livekit-client';
 
@@ -85,7 +85,6 @@ export default function VoiceAgent() {
     }
     setCallState('idle');
     stopTimer();
-    window.dispatchEvent(new CustomEvent('vapi-end')); // Signal music to return
   };
 
   const toggleCall = async () => {
@@ -121,9 +120,6 @@ export default function VoiceAgent() {
             const el = document.getElementById(data.section.toLowerCase());
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
-          if (data.type === 'OPEN_PROJECT') {
-             // Logic to trigger project modal if needed
-          }
         } catch (e) { console.error("Error parsing Friday data:", e); }
       });
 
@@ -135,7 +131,6 @@ export default function VoiceAgent() {
       
       setCallState('active');
       startTimer();
-      window.dispatchEvent(new CustomEvent('vapi-start')); // Signal music to duck
 
     } catch (err) {
       console.error("Friday Connection Error:", err);

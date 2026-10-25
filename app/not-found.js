@@ -60,7 +60,7 @@ function GlitchTerminal() {
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-[var(--accent-cyan)] cursor-blink"
+            className="text-[var(--accent)] cursor-blink"
           >
             █
           </motion.span>
@@ -78,16 +78,16 @@ export default function NotFound() {
     >
       {/* Grid overlay */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
-          backgroundImage: `linear-gradient(var(--accent-cyan) 1px, transparent 1px), linear-gradient(90deg, var(--accent-cyan) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px)`,
           backgroundSize: '60px 60px',
         }}
       />
 
       {/* Glow blobs */}
-      <div className="absolute top-1/4 left-1/3 w-96 h-96 rounded-full bg-[#00D4FF06] blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/3 w-72 h-72 rounded-full bg-[#7C3AED06] blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/3 w-96 h-96 rounded-full bg-[#C4614A08] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/3 w-72 h-72 rounded-full bg-[#E8896F08] blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center text-center gap-8 max-w-lg">
         {/* 404 big number */}
@@ -100,7 +100,7 @@ export default function NotFound() {
             className="font-display font-extrabold leading-none select-none"
             style={{
               fontSize: 'clamp(100px, 20vw, 180px)',
-              background: 'linear-gradient(135deg, #00D4FF20, #7C3AED20)',
+              background: 'linear-gradient(135deg, #C4614A30, #9E4A3630)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -147,7 +147,7 @@ export default function NotFound() {
           <Link href="/">
             <motion.span
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-body font-semibold text-sm text-[var(--bg)] cursor-pointer"
-              style={{ background: 'linear-gradient(135deg, #00D4FF, #7C3AED)' }}
+              style={{ background: 'linear-gradient(135deg, #C4614A, #9E4A36)' }}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -158,7 +158,7 @@ export default function NotFound() {
 
           <motion.button
             onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[var(--border)] text-[var(--text-secondary)] font-body text-sm hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] transition-all duration-200"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[var(--border)] text-[var(--text-secondary)] font-body text-sm hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all duration-200"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
           >
@@ -174,7 +174,7 @@ export default function NotFound() {
           transition={{ delay: 0.7 }}
           className="font-mono text-xs text-[var(--text-muted)]"
         >
-          tanish<span className="text-[var(--accent-cyan)]">.</span>dev
+          tanish<span className="text-[var(--accent)]">.</span>dev
         </motion.p>
       </div>
     </div>
