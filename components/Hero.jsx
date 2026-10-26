@@ -2,15 +2,20 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Mail, MoveRight } from 'lucide-react';
+import { ArrowDown, Mail, MoveRight } from 'lucide-react';
 import { personal, social } from '../lib/data';
 
 /* ── Typewriter ──────────────────────────────────────────────── */
 function useTypewriter(words, speed = 80, delSpeed = 40, pause = 2400) {
-  const [text, setText] = useState('');
+  const [reduced] = useState(() =>
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  );
+  const [text, setText] = useState(reduced ? words[0] : '');
   const [wi, setWi] = useState(0);
   const [del, setDel] = useState(false);
   useEffect(() => {
+    if (reduced) return;
     const cur = words[wi % words.length];
     let t;
     if (!del && text === cur) { t = setTimeout(() => setDel(true), pause); }
@@ -20,7 +25,7 @@ function useTypewriter(words, speed = 80, delSpeed = 40, pause = 2400) {
         del ? delSpeed : speed);
     }
     return () => clearTimeout(t);
-  }, [text, del, wi, words, speed, delSpeed, pause]);
+  }, [text, del, wi, words, speed, delSpeed, pause, reduced]);
   return text;
 }
 
@@ -29,7 +34,10 @@ function ThreeCanvas() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    let animId;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
+    let animId = null;
+    let inView = true;
     let renderer, scene, camera, mesh, mesh2, mesh3, frame;
 
     const init = async () => {
@@ -119,11 +127,30 @@ function ThreeCanvas() {
 
           renderer.render(scene, camera);
         };
-        animate();
+
+        // Pause when hero offscreen or tab hidden
+        const updateLoop = () => {
+          const shouldRun = inView && !document.hidden;
+          if (shouldRun && animId === null) animate();
+          else if (!shouldRun && animId !== null) {
+            cancelAnimationFrame(animId);
+            animId = null;
+          }
+        };
+        const io = new IntersectionObserver(([e]) => {
+          inView = e.isIntersecting;
+          updateLoop();
+        });
+        io.observe(canvas);
+        const onVis = () => updateLoop();
+        document.addEventListener('visibilitychange', onVis);
+        updateLoop();
 
         return () => {
           window.removeEventListener('mousemove', onMouse);
           window.removeEventListener('resize', onResize);
+          document.removeEventListener('visibilitychange', onVis);
+          io.disconnect();
         };
       } catch (e) { console.error(e); }
     };
@@ -148,7 +175,6 @@ function ThreeCanvas() {
 /* ── Main ────────────────────────────────────────────────────── */
 export default function Hero() {
   const typed = useTypewriter(personal.taglines, 70, 38, 2200);
-  const locationTyped = useTypewriter(['India', 'भारत'], 90, 40, 1500);
 
   const container = {
     hidden: {},
@@ -203,7 +229,7 @@ export default function Hero() {
                 Tanish Rajput <span style={{ color: 'var(--accent)', fontStyle: 'normal' }}>—</span>
               </span>
               <span className="font-mono text-xs tracking-widest uppercase text-[var(--accent)] block">
-                AI Engineer · {locationTyped}
+                AI Engineer · India / भारत
               </span>
             </div>
             <h1
@@ -221,7 +247,7 @@ export default function Hero() {
                   backgroundClip: 'text',
                 }}
               >
-                that Scales.
+                that Lasts.
               </span>
             </h1>
           </motion.div>
@@ -288,8 +314,6 @@ export default function Hero() {
                 {icon}
               </motion.a>
             ))}
-            <div className="h-4 w-px" style={{ background: 'var(--border)' }} />
-            <span className="font-mono text-2xs text-[var(--text-muted)] uppercase tracking-widest">Beyond the wrapper</span>
           </motion.div>
         </motion.div>
       </div>
@@ -303,6 +327,7 @@ export default function Hero() {
         transition={{ delay: 1.4, duration: 0.5 }}
         aria-label="Scroll down"
       >
+        <span className="font-mono text-2xs uppercase tracking-widest">scroll</span>
         <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}>
           <ArrowDown size={15} />
         </motion.div>

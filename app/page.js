@@ -15,6 +15,7 @@ import VoiceWidget from '../components/VoiceWidget';
 
 export default function Home() {
   useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     let lenis;
     (async () => {
       const LenisModule = await import('lenis');
