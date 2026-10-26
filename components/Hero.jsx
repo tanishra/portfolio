@@ -241,11 +241,9 @@ export default function Hero() {
             className="font-body text-base leading-relaxed mb-10 max-w-xl"
             style={{ color: 'var(--text-secondary)' }}
           >
-            AI Engineer {' '}
-            {/* <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>QualtechEdge</span>{' '} */}
-            — building LLM systems, voice agents, and RAG pipelines from first principles.
-            No frameworks. Full control. Obsessed with making AI work{' '}
-            <em style={{ color: 'var(--text-primary)' }}>in production</em>.
+            I build AI systems that survive production — voice agents, orchestration,
+            and the plumbing that keeps them{' '}
+            <em style={{ color: 'var(--text-primary)' }}>running</em>.
           </motion.p>
 
           {/* CTAs */}
