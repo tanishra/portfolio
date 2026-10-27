@@ -18,14 +18,12 @@ function GlitchTerminal() {
   const [lines, setLines] = useState([]);
 
   useEffect(() => {
-    let i = 0;
     const interval = setInterval(() => {
-      if (i < glitchLines.length) {
-        setLines((prev) => [...prev, glitchLines[i]]);
-        i++;
-      } else {
-        clearInterval(interval);
-      }
+      setLines((prev) =>
+        prev.length < glitchLines.length
+          ? [...prev, glitchLines[prev.length]]
+          : prev
+      );
     }, 380);
     return () => clearInterval(interval);
   }, []);
@@ -167,15 +165,6 @@ export default function NotFound() {
           </motion.button>
         </motion.div>
 
-        {/* Branding */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="font-mono text-xs text-[var(--text-muted)]"
-        >
-          tanish<span className="text-[var(--accent)]">.</span>dev
-        </motion.p>
       </div>
     </div>
   );
