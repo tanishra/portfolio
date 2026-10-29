@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { motion, useInView, useScroll, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useScroll, useSpring, useReducedMotion } from 'framer-motion';
 import { Calendar, Terminal, Activity } from 'lucide-react';
 import { experience } from '../lib/data';
 
@@ -37,6 +37,7 @@ function CompanyLogo({ url, name }) {
 function ExpRow({ exp, i, inView }) {
   const rowRef = useRef(null);
   const reduced = useReducedMotion();
+  const [hoveredTech, setHoveredTech] = useState(null);
   const active = useInView(rowRef, { margin: '-42% 0px -42% 0px' });
   const { scrollYProgress } = useScroll({
     target: rowRef,
@@ -172,9 +173,40 @@ function ExpRow({ exp, i, inView }) {
       <div className="lg:col-span-2 hidden lg:flex flex-col gap-2 pt-2">
         <span className="font-mono text-[9px] uppercase tracking-widest text-[#A3A3A3] mb-2">Stack DNA</span>
         {exp.tech.map((t) => (
-          <div key={t} className="text-[10px] font-mono text-[#525252] flex items-center gap-2 group-hover:text-[#111111] transition-colors">
-            <div className="w-1 h-1 bg-[#E8E6E0] rounded-full group-hover:bg-[#C4614A] transition-colors" />
-            {t}
+          <div
+            key={t.name}
+            onMouseEnter={() => setHoveredTech(t.name)}
+            onMouseLeave={() => setHoveredTech(null)}
+            className={`relative text-[10px] font-mono flex items-center gap-2 transition-colors cursor-default ${
+              hoveredTech === t.name ? 'text-[#C4614A]' : 'text-[#525252] group-hover:text-[#111111]'
+            }`}
+          >
+            <div className={`w-1 h-1 rounded-full transition-colors ${hoveredTech === t.name ? 'bg-[#C4614A]' : 'bg-[#E8E6E0] group-hover:bg-[#C4614A]'}`} />
+            {t.name}
+            <AnimatePresence>
+              {hoveredTech === t.name && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.18 }}
+                  className="absolute right-full mr-3 top-1/2 -translate-y-1/2 w-48 z-50 pointer-events-none"
+                >
+                  <motion.div
+                    initial={reduced ? false : { x: 6 }}
+                    animate={reduced ? {} : { x: 0 }}
+                    transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative"
+                  >
+                    <div className="rounded-lg bg-[#111111] px-3 py-2.5 shadow-xl">
+                      <div className="text-[9px] text-[#E8896F] uppercase tracking-widest mb-0.5">{t.name}</div>
+                      <div className="text-[10px] text-white/80 leading-snug font-body">{t.usage}</div>
+                    </div>
+                    <span className="absolute top-1/2 -translate-y-1/2 -right-1 w-2 h-2 rotate-45 bg-[#111111]" />
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </div>
