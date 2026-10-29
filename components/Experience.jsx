@@ -138,6 +138,22 @@ function ExpRow({ exp, i, inView }) {
             </p>
           )}
 
+          {/* Agents shipped under this role */}
+          {exp.agents && (
+            <div className="mb-10 max-w-2xl">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-[#A3A3A3]">also shipped</span>
+              <div className="mt-2 space-y-1.5">
+                {exp.agents.map((a) => (
+                  <div key={a.name} className="flex items-baseline gap-3 font-mono text-[11px]">
+                    <span className="text-[#C4614A] font-semibold shrink-0">{a.name}</span>
+                    <span className="text-[#A3A3A3]">—</span>
+                    <span className="text-[#525252]">{a.desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Bottom Metadata */}
           <div className="flex flex-wrap items-center gap-8 pt-8 border-t border-[#E8E6E0]/50">
             <div className="flex items-center gap-2 text-[#A3A3A3] font-mono text-xs uppercase tracking-wider">
