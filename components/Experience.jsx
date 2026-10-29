@@ -112,7 +112,23 @@ function ExpRow({ exp, i, inView }) {
               {exp.description.map((point, idx) => (
                 <li key={idx} className="flex items-start gap-4 text-sm md:text-base font-body leading-relaxed text-[#525252]">
                   <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-[#C4614A] shrink-0" />
-                  {point}
+                  <span>
+                    {point.split(/(FRIDA)/).map((seg, k) =>
+                      seg === 'FRIDA' && exp.productUrl ? (
+                        <a
+                          key={k}
+                          href={exp.productUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-semibold text-[#111111] border-b border-[#C4614A]/30 hover:text-[#C4614A] hover:border-[#C4614A] transition-colors"
+                        >
+                          FRIDA
+                        </a>
+                      ) : (
+                        seg
+                      )
+                    )}
+                  </span>
                 </li>
               ))}
             </ul>
