@@ -171,7 +171,7 @@ function ExpRow({ exp, i, inView }) {
 
       {/* Tech DNA Rail - Far Right */}
       <div className="lg:col-span-2 hidden lg:flex flex-col gap-2 pt-2">
-        <span className="font-mono text-[9px] uppercase tracking-widest text-[#A3A3A3] mb-2">Stack DNA</span>
+        <span className="font-mono text-[9px] uppercase tracking-widest text-[#A3A3A3] mb-2">built with</span>
         {exp.tech.map((t) => (
           <div
             key={t.name}
