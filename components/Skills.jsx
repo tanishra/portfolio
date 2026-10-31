@@ -7,11 +7,10 @@ import { skills, aiTools } from '../lib/data';
 const techMeta = {
   // Languages
   Python:     { icon: 'logos:python',           color: '#3776AB' },
+  TypeScript: { si: 'typescript',               color: '#3178C6' },
+  JavaScript: { si: 'javascript',               color: '#F7DF1E' },
   Java:       { icon: 'logos:java',             color: '#ED8B00', label: 'Java' },
   
-  // AI / ML Core
-  'LLMs (OpenAI, Claude, Gemini, Groq, Mistral, DeepSeek, Sarvam, Moonshot, Llamma)': { icon: 'logos:openai-icon', color: '#10A37F', label: 'LLMs' },
-  'LangChain / LangGraph':         { si: 'langchain', color: '#1C3C3C', label: 'LangChain' },
   'RAG Pipelines':      { icon: 'fluent:brain-circuit-24-filled', color: '#C4614A', label: 'RAG' },
   'Prompt Engineering': { icon: 'fluent:chat-bubbles-question-24-filled', color: '#92400E', label: 'Prompting' },
   'Context Engineering':{ icon: 'fluent:layer-24-filled', color: '#6366F1', label: 'Context' },
@@ -24,9 +23,9 @@ const techMeta = {
   // Backend & Core
   FastAPI:    { icon: 'logos:fastapi',          color: '#009688' },
   Flask:      { icon: 'logos:flask',            color: '#000000' },
-  Asyncio:    { icon: 'logos:python',           color: '#3776AB', letter: '⚡' },
-  Parallelism:{ icon: 'logos:python',           color: '#3776AB', letter: '◈' },
-  CrewAI:     { si: 'crewai',           color: '#FF4B4B', label: 'CrewAI' },
+  Celery:     { si: 'celery',                   color: '#37814A' },
+  React:      { si: 'react',                    color: '#61DAFB' },
+  'Next.js':  { si: 'nextdotjs',                color: '#111111' },
   'LangChain': { si: 'langchain',       color: '#1C3C3C' },
   'LangGraph': { si: 'langchain',       color: '#1C3C3C' },
 
@@ -51,30 +50,29 @@ const techMeta = {
   Claude:     { icon: 'logos:claude-icon',      color: '#D97757' },
   ChatGPT:    { icon: 'logos:openai-icon',      color: '#10A37F' },
   Gemini:     { icon: 'logos:google-gemini',    color: '#4285F4' },
-  Groq:       { si: 'groq',              color: '#F55036' },
   ElevenLabs: { si: 'elevenlabs',        color: '#111111' },
   Deepgram:   { si: 'deepgram',          color: '#13EF95' },
+  'Sarvam AI': { color: '#7C3AED' },
   Pinecone:   { icon: 'logos:pinecone-icon',    color: '#00B388' },
   LangSmith:  { si: 'langchain',       color: '#1C3C3C' },
   LiveKit:    { si: 'livekit',           color: '#002CF2' },
   Docling:    { icon: 'fluent:document-pdf-24-filled', color: '#C4614A' },
+  DeepEval:   { color: '#C4614A' },
+  Mem0:       { si: 'mem0',            color: '#4F46E5' },
+  Tavily:     { si: 'tavily',          color: '#8B5CF6' },
+  Instructor: { color: '#0EA5E9' },
   Windsurf:   { si: 'windsurf',          color: '#09B3AF' },
   'Claude Code': { icon: 'logos:claude-icon',    color: '#D97757' },
-  'Codex CLI':   { icon: 'logos:openai-icon',    color: '#10A37F' },
-  'Gemini CLI':  { icon: 'logos:google-gemini',  color: '#4285F4' },
-  LangFuse:   { icon: 'fluent:flash-24-filled', color: '#000000' },
-  'Google Stitch': { icon: 'logos:google-icon',   color: '#4285F4' },
-  'Google Pomeli': { icon: 'logos:google-icon',   color: '#4285F4' },
-  'Google Antigravity': { icon: 'logos:google-icon', color: '#4285F4' },
+  Devin:      { color: '#1E40AF' },
+  Langfuse:   { si: 'langfuse',        color: '#111111' },
   n8n:        { si: 'n8n',             color: '#FF6D5A' },
   Zapier:     { icon: 'logos:zapier-icon',      color: '#FF4F00' },
-  ChromaDB:   { icon: 'logos:chroma-icon',      color: '#FFCC33' },
   Weaviate:   { icon: 'logos:weaviate-icon',    color: '#00D09F' },
 };
 
 const skillCategories = [
   { key: 'languages',      label: 'Languages',      accent: '#3776AB' },
-  { key: 'frameworks',     label: 'Backend & Core', accent: '#009688' },
+  { key: 'frameworks',     label: 'Frameworks',     accent: '#009688' },
   { key: 'infrastructure', label: 'Cloud & Data',   accent: '#DC382D' },
   { key: 'tools',          label: 'Workflow',       accent: '#525252' },
 ];
