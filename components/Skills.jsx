@@ -7,10 +7,11 @@ import { skills, aiTools } from '../lib/data';
 const techMeta = {
   // Languages
   Python:     { icon: 'logos:python',           color: '#3776AB' },
-  TypeScript: { si: 'typescript',               color: '#3178C6' },
-  JavaScript: { si: 'javascript',               color: '#F7DF1E' },
   Java:       { icon: 'logos:java',             color: '#ED8B00', label: 'Java' },
   
+  // AI / ML Core
+  'LLMs':               { icon: 'logos:openai-icon', color: '#10A37F' },
+  'LangChain':          { domain: 'langchain.com', color: '#1C3C3C' },
   'RAG Pipelines':      { icon: 'fluent:brain-circuit-24-filled', color: '#C4614A', label: 'RAG' },
   'Prompt Engineering': { icon: 'fluent:chat-bubbles-question-24-filled', color: '#92400E', label: 'Prompting' },
   'Context Engineering':{ icon: 'fluent:layer-24-filled', color: '#6366F1', label: 'Context' },
@@ -23,11 +24,9 @@ const techMeta = {
   // Backend & Core
   FastAPI:    { icon: 'logos:fastapi',          color: '#009688' },
   Flask:      { icon: 'logos:flask',            color: '#000000' },
-  Celery:     { si: 'celery',                   color: '#37814A' },
-  React:      { si: 'react',                    color: '#61DAFB' },
-  'Next.js':  { si: 'nextdotjs',                color: '#111111' },
-  'LangChain': { si: 'langchain',       color: '#1C3C3C' },
-  'LangGraph': { si: 'langchain',       color: '#1C3C3C' },
+  'LangGraph': { domain: 'langchain.com', color: '#1C3C3C' },
+  PipeCat:    { domain: 'pipecat.ai',   color: '#4F46E5' },
+  DeepAgents: { domain: 'langchain.com', color: '#1C3C3C' },
 
   // Infrastructure & Cloud
   Docker:     { icon: 'logos:docker-icon',      color: '#2496ED' },
@@ -52,19 +51,18 @@ const techMeta = {
   Gemini:     { icon: 'logos:google-gemini',    color: '#4285F4' },
   ElevenLabs: { si: 'elevenlabs',        color: '#111111' },
   Deepgram:   { si: 'deepgram',          color: '#13EF95' },
-  'Sarvam AI': { color: '#7C3AED' },
+  'Sarvam AI': { domain: 'sarvam.ai',   color: '#7C3AED' },
   Pinecone:   { icon: 'logos:pinecone-icon',    color: '#00B388' },
-  LangSmith:  { si: 'langchain',       color: '#1C3C3C' },
+  LangSmith:  { domain: 'smith.langchain.com', color: '#1C3C3C' },
   LiveKit:    { si: 'livekit',           color: '#002CF2' },
-  Docling:    { icon: 'fluent:document-pdf-24-filled', color: '#C4614A' },
-  DeepEval:   { color: '#C4614A' },
-  Mem0:       { si: 'mem0',            color: '#4F46E5' },
-  Tavily:     { si: 'tavily',          color: '#8B5CF6' },
-  Instructor: { color: '#0EA5E9' },
-  Windsurf:   { si: 'windsurf',          color: '#09B3AF' },
+  DeepEval:   { domain: 'deepeval.com',   color: '#C4614A' },
+  DeepEval:   { domain: 'deepeval.com',   color: '#C4614A' },
+  Mem0:       { domain: 'mem0.ai',        color: '#4F46E5' },
+  Tavily:     { domain: 'tavily.com',     color: '#8B5CF6' },
   'Claude Code': { icon: 'logos:claude-icon',    color: '#D97757' },
-  Devin:      { color: '#1E40AF' },
-  Langfuse:   { si: 'langfuse',        color: '#111111' },
+  Devin:      { domain: 'devin.ai',       color: '#1E40AF' },
+  'Google Antigravity': { domain: 'antigravity.google', color: '#4285F4' },
+  Langfuse:   { domain: 'langfuse.com',   color: '#111111' },
   n8n:        { si: 'n8n',             color: '#FF6D5A' },
   Zapier:     { icon: 'logos:zapier-icon',      color: '#FF4F00' },
   Weaviate:   { icon: 'logos:weaviate-icon',    color: '#00D09F' },
@@ -83,6 +81,7 @@ const toolCategories = [
   { key: 'Voice', label: 'Voice AI',  accent: '#10A37F' },
   { key: 'Infra', label: 'Infra',     accent: '#1a7a4a' },
   { key: 'Dev',   label: 'Dev Tools', accent: '#111111' },
+  { key: 'Auto',  label: 'Automation', accent: '#FF6D5A' },
 ];
 
 const fadeUp = (d = 0) => ({
@@ -90,21 +89,29 @@ const fadeUp = (d = 0) => ({
   show:   { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: d } },
 });
 
+function iconUrlsFor(meta) {
+  const urls = [];
+  if (meta.si) urls.push(`https://cdn.simpleicons.org/${meta.si}/${(meta.color || '111111').replace('#', '')}`);
+  if (meta.icon) urls.push(`https://api.iconify.design/${meta.icon.replace(':', '/')}.svg`);
+  if (meta.domain) urls.push(`https://www.google.com/s2/favicons?domain=${meta.domain}&sz=128`);
+  return urls;
+}
+
+function TechImg({ meta, label, imgClass, letterClass }) {
+  const [stage, setStage] = useState(0);
+  const url = iconUrlsFor(meta)[stage];
+  if (!url) {
+    return <span className={letterClass} style={{ color: meta.color }}>{meta.letter || label.charAt(0)}</span>;
+  }
+  return <img src={url} alt={label} className={imgClass} onError={() => setStage((s) => s + 1)} loading="lazy" />;
+}
+
 function SkillCard({ name, index, isTool = false, description = "" }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
-  const [imgError, setImgError] = useState(false);
-  
   const meta = techMeta[name] || { icon: null, color: '#525252' };
   const label = meta.label || name;
   const color = meta.color;
-  
-  const iconUrl = useMemo(() => {
-    if (imgError) return null;
-    if (meta.si) return `https://cdn.simpleicons.org/${meta.si}/${(meta.color || '111111').replace('#','')}`;
-    if (meta.icon) return `https://api.iconify.design/${meta.icon}.svg`;
-    return null;
-  }, [meta, imgError]);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -126,16 +133,7 @@ function SkillCard({ name, index, isTool = false, description = "" }) {
         style={{ background: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, ${color}12, transparent)` }} />
       <div className={`relative z-10 flex ${isTool ? 'flex-col items-start text-left' : 'flex-col items-center text-center'} gap-4`}>
         <div className={`w-12 h-12 flex items-center justify-center rounded-xl bg-[#F4F2EE] group-hover:bg-white transition-colors duration-300 shadow-sm border border-transparent group-hover:border-[#E8E6E0]`}>
-          {iconUrl ? (
-            <img 
-              src={iconUrl} 
-              alt={label} 
-              className="w-7 h-7 object-contain group-hover:scale-110 transition-all duration-300"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <span className="text-xl font-display font-bold" style={{ color }}>{meta.letter || label.charAt(0)}</span>
-          )}
+          <TechImg meta={meta} label={label} imgClass="w-7 h-7 object-contain group-hover:scale-110 transition-all duration-300" letterClass="text-xl font-display font-bold" />
         </div>
         <div className="w-full">
           <h4 className="font-body text-[13px] font-semibold text-[#111111]">{label}</h4>
@@ -233,10 +231,13 @@ export default function Skills() {
               {marqueeItems.map((name, i) => {
                  const meta = techMeta[name];
                  const color = meta?.color || '#525252';
-                 const iconUrl = meta?.si ? `https://cdn.simpleicons.org/${meta.si}/${(meta.color || '111111').replace('#','')}` : (meta?.icon ? `https://api.iconify.design/${meta.icon}.svg` : null);
                  return (
                    <div key={`${name}-${i}`} className="flex items-center gap-3 mx-8 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default">
-                     {iconUrl ? <img src={iconUrl} alt={name} className="w-5 h-5" /> : <div className="w-5 h-5 rounded bg-[#D4D2CE] flex items-center justify-center text-[10px] font-bold" style={{ color }}>{meta?.letter || name.charAt(0)}</div>}
+                     {meta ? (
+                       <TechImg meta={meta} label={meta.label || name} imgClass="w-5 h-5 object-contain" letterClass="w-5 h-5 rounded bg-[#D4D2CE] flex items-center justify-center text-[10px] font-bold" />
+                     ) : (
+                       <div className="w-5 h-5 rounded bg-[#D4D2CE] flex items-center justify-center text-[10px] font-bold" style={{ color }}>{name.charAt(0)}</div>
+                     )}
                      <span className="font-mono text-xs font-medium text-[#111111]">{meta?.label || name}</span>
                    </div>
                  );
