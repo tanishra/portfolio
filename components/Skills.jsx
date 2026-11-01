@@ -10,17 +10,7 @@ const techMeta = {
   Java:       { icon: 'logos:java',             color: '#ED8B00', label: 'Java' },
   
   // AI / ML Core
-  'LLMs':               { icon: 'logos:openai-icon', color: '#10A37F' },
   'LangChain':          { domain: 'langchain.com', color: '#1C3C3C' },
-  'RAG Pipelines':      { icon: 'fluent:brain-circuit-24-filled', color: '#C4614A', label: 'RAG' },
-  'Prompt Engineering': { icon: 'fluent:chat-bubbles-question-24-filled', color: '#92400E', label: 'Prompting' },
-  'Context Engineering':{ icon: 'fluent:layer-24-filled', color: '#6366F1', label: 'Context' },
-  'Vector Databases':   { icon: 'logos:pinecone-icon', color: '#00B388', label: 'Vector DBs' },
-  'Embeddings':         { icon: 'fluent:database-link-24-filled', color: '#4285F4', label: 'Embeddings' },
-  'Fine-tuning LLMs':   { icon: 'fluent:wrench-settings-24-filled', color: '#059669', label: 'Fine-tuning' },
-  'Agentic AI':         { icon: 'fluent:bot-24-filled', color: '#C4614A', label: 'Agents' },
-  MCP:                  { icon: 'fluent:connector-24-filled', color: '#525252', label: 'MCP' },
-  
   // Backend & Core
   FastAPI:    { icon: 'logos:fastapi',          color: '#009688' },
   Flask:      { icon: 'logos:flask',            color: '#000000' },
@@ -164,11 +154,6 @@ export default function Skills() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
-  const marqueeItems = useMemo(() => {
-    const keys = Object.keys(techMeta);
-    return [...keys, ...keys, ...keys];
-  }, []);
-
   return (
     <section id="skills" ref={containerRef} className="py-32 bg-[#FAFAF8] relative overflow-hidden">
       <div className="absolute top-1/4 -right-24 w-96 h-96 bg-[#C4614A] opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
@@ -223,28 +208,6 @@ export default function Skills() {
           </AnimatePresence>
         </div>
 
-        {/* Bottom Marquee for Complete Stack */}
-        <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }} className="mt-24 pt-12 border-t border-[#E8E6E0]">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-center text-[#A3A3A3] mb-10">Comprehensive Technology Ecosystem</p>
-          <div className="relative flex overflow-hidden group">
-            <motion.div className="flex whitespace-nowrap py-4 items-center" animate={{ x: [0, -1035] }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
-              {marqueeItems.map((name, i) => {
-                 const meta = techMeta[name];
-                 const color = meta?.color || '#525252';
-                 return (
-                   <div key={`${name}-${i}`} className="flex items-center gap-3 mx-8 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default">
-                     {meta ? (
-                       <TechImg meta={meta} label={meta.label || name} imgClass="w-5 h-5 object-contain" letterClass="w-5 h-5 rounded bg-[#D4D2CE] flex items-center justify-center text-[10px] font-bold" />
-                     ) : (
-                       <div className="w-5 h-5 rounded bg-[#D4D2CE] flex items-center justify-center text-[10px] font-bold" style={{ color }}>{name.charAt(0)}</div>
-                     )}
-                     <span className="font-mono text-xs font-medium text-[#111111]">{meta?.label || name}</span>
-                   </div>
-                 );
-              })}
-            </motion.div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
