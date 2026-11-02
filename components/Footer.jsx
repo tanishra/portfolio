@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, FileText, Eye, Heart, ArrowUp } from 'lucide-react';
+import { Mail, FileText, Eye, ArrowUp } from 'lucide-react';
 import { personal, social } from '../lib/data';
 
 const footerLinks = [
@@ -9,11 +9,6 @@ const footerLinks = [
   { label:'LinkedIn', href:social.linkedin,    icon:<LI/> },
   { label:'Email',    href:social.email,        icon:<Mail size={15}/> },
   { label:'Resume',   href:personal.resumeUrl, icon:<FileText size={15}/> },
-];
-const navLinks = [
-  {label:'About',href:'#about'},{label:'Experience',href:'#experience'},
-  {label:'Skills',href:'#skills'},{label:'Contributions',href:'#contributions'},
-  {label:'Projects',href:'#projects'},{label:'Voice Agent',href:'#voice'}
 ];
 
 function GH() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>; }
@@ -88,18 +83,6 @@ export default function Footer() {
             <VisitorCounter/>
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:8}}>
-            <p style={{fontFamily:'JetBrains Mono,monospace',fontSize:'0.6rem',textTransform:'uppercase',letterSpacing:'0.15em',color:'var(--text-muted)',marginBottom:4}}>Navigate</p>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px 32px'}}>
-              {navLinks.map(l=>(
-                <a key={l.label} href={l.href} onClick={e=>{e.preventDefault();document.getElementById(l.href.replace('#',''))?.scrollIntoView({behavior:'smooth'});}}
-                  style={{fontFamily:'Inter,sans-serif',fontSize:'0.85rem',color:'var(--text-secondary)',textDecoration:'none',transition:'color 0.15s'}}
-                  onMouseEnter={e=>{e.target.style.color='var(--accent)';}} onMouseLeave={e=>{e.target.style.color='var(--text-secondary)';}}>
-                  {l.label}
-                </a>
-              ))}
-            </div>
-          </div>
-          <div style={{display:'flex',flexDirection:'column',gap:8}}>
             <p style={{fontFamily:'JetBrains Mono,monospace',fontSize:'0.6rem',textTransform:'uppercase',letterSpacing:'0.15em',color:'var(--text-muted)',marginBottom:4}}>Connect</p>
             {footerLinks.map(l=>(
               <motion.a key={l.label} href={l.href} target={l.href.startsWith('mailto')||l.href===personal.resumeUrl?undefined:'_blank'} rel="noopener noreferrer"
@@ -114,9 +97,7 @@ export default function Footer() {
         <div style={{height:1,background:'var(--border)',marginBottom:'1.5rem'}} />
         <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:12}}>
           <p style={{fontFamily:'JetBrains Mono,monospace',fontSize:'0.65rem',color:'var(--text-muted)'}}>© {new Date().getFullYear()} Tanish Rajput. All rights reserved.</p>
-          <div style={{display:'flex',alignItems:'center',gap:5,fontFamily:'JetBrains Mono,monospace',fontSize:'0.65rem',color:'var(--text-muted)'}}>
-            Built with <Heart size={11} style={{color:'#DC2626',fill:'#DC2626'}}/> by Tanish
-          </div>
+          
           <motion.button onClick={scrollTop} whileHover={{y:-2}} style={{display:'flex',alignItems:'center',gap:5,fontFamily:'JetBrains Mono,monospace',fontSize:'0.65rem',color:'var(--text-muted)',background:'none',border:'none',cursor:'pointer'}}
             onMouseEnter={e=>{e.currentTarget.style.color='var(--accent)';}} onMouseLeave={e=>{e.currentTarget.style.color='var(--text-muted)';}}>
             <ArrowUp size={12}/> Back to top
