@@ -42,23 +42,6 @@ function buildGrid(contributions) {
   return grid;
 }
 
-function generateFallback() {
-  const raw = [];
-  const today = new Date();
-  for (let i = 363; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const isWeekend = d.getDay() === 0 || d.getDay() === 6;
-    let count = 0;
-    if (Math.random() > 0.38) {
-      count = Math.floor(Math.random() * (isWeekend ? 4 : 8));
-      if (!isWeekend && Math.random() > 0.93) count += Math.floor(Math.random() * 8) + 6;
-    }
-    raw.push({ date: d.toISOString().split('T')[0], count });
-  }
-  return buildGrid(raw);
-}
-
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const DAYS   = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 
@@ -89,7 +72,6 @@ export default function Contributions() {
 
   const [grid,       setGrid]       = useState([]);
   const [loadState,  setLoadState]  = useState('idle');
-  const [isFallback, setIsFallback] = useState(false);
   const [revealed,   setRevealed]   = useState(false);
   const [tooltip,    setTooltip]    = useState({ cell: null, pos: { x: 0, y: 0 } });
 
@@ -108,11 +90,11 @@ export default function Contributions() {
       const data = await res.json();
       if (!data.contributions?.length) throw new Error('empty');
       setGrid(buildGrid(data.contributions));
-      setIsFallback(false); setLoadState('done');
+      setLoadState('done');
     } catch (err) {
-      console.warn('[Contributions] fallback:', err.message);
-      setGrid(generateFallback());
-      setIsFallback(true); setLoadState('error');
+      console.warn('[Contributions] fetch failed:', err.message);
+      setGrid([]);
+      setLoadState('error');
     }
   }, []);
 
@@ -165,7 +147,7 @@ export default function Contributions() {
               </em>
             </h2>
             <p style={{ fontFamily:'Inter,sans-serif', fontSize:'0.875rem', color:'#525252' }}>
-              {isFallback ? 'Sample activity — automated engineering log.' : `Real activity from @${GITHUB_USERNAME} on GitHub.`}
+              Public activity from @{GITHUB_USERNAME} on GitHub — private work not counted.
             </p>
           </motion.div>
 
@@ -257,6 +239,18 @@ export default function Contributions() {
                   <div style={{ display:'flex', alignItems:'center', justifyContent:'center', width:'100%', height:120, gap:8, color:'#A3A3A3' }}>
                     <RefreshCw size={14} style={{ animation:'spin 1s linear infinite' }} />
                     <span style={{ fontFamily:'JetBrains Mono,monospace', fontSize:'0.75rem' }}>Fetching GitHub data…</span>
+                  </div>
+                ) : loadState === 'error' ? (
+                  <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', width:'100%', height:120, gap:10, color:'#A3A3A3' }}>
+                    <span style={{ fontFamily:'JetBrains Mono,monospace', fontSize:'0.75rem', display:'flex', alignItems:'center', gap:6 }}>
+                      <AlertCircle size={14} /> GitHub data unavailable
+                    </span>
+                    <button
+                      onClick={fetchContributions}
+                      style={{ display:'flex', alignItems:'center', gap:5, padding:'6px 12px', borderRadius:9, border:'1px solid #E8E6E0', background:'#FAFAF8', fontFamily:'JetBrains Mono,monospace', fontSize:'0.65rem', color:'#525252', cursor:'pointer' }}
+                    >
+                      <RefreshCw size={11} /> Retry
+                    </button>
                   </div>
                 ) : (
                   <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
