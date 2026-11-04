@@ -1,0 +1,19 @@
+# Tanish Rajput
+
+> AI Engineer based in India. Builds production voice agents and agentic systems — LangGraph runtimes, multi-agent orchestration, voice AI (LiveKit, Sarvam AI), observability and evals. Currently AI Engineer at QualtechEdge, building FRIDA (config-driven agent runtime).
+
+## Links
+
+- Portfolio: https://www.tanish.website
+- Resume: https://www.tanish.website/resume.pdf
+- GitHub: https://github.com/tanishra
+- LinkedIn: https://www.linkedin.com/in/tr26/
+- Email: mailto:tanishrajput9@gmail.com
+
+## Sections
+
+- About: https://www.tanish.website/#about
+- Experience: https://www.tanish.website/#experience
+- Skills: https://www.tanish.website/#skills
+- Projects: https://www.tanish.website/#projects
+- Contact: https://www.tanish.website/#contact

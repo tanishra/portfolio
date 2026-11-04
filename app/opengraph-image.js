@@ -134,7 +134,7 @@ export default async function Image() {
             color: '#A3A3A3',
           }}
         >
-          tanishrajput.dev
+          tanish.website
         </div>
 
         {/* Corner T logo */}
