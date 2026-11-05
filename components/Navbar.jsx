@@ -17,6 +17,7 @@ export default function Navbar() {
   const [scrolled,       setScrolled]       = useState(false);
   const [menuOpen,       setMenuOpen]       = useState(false);
   const [activeSection,  setActiveSection]  = useState('');
+  const [navHover,       setNavHover]       = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -42,15 +43,31 @@ export default function Navbar() {
         initial={{ y: -64, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-        style={{
-          background: scrolled ? 'rgba(250,250,248,0.88)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-          borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-          padding: scrolled ? '12px 0' : '20px 0',
-        }}
+        className="fixed top-0 left-0 right-0 z-50"
       >
+        <div
+          className="mx-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          onMouseEnter={() => setNavHover(true)}
+          onMouseLeave={() => setNavHover(false)}
+          style={{
+            maxWidth: scrolled ? '72rem' : '44rem',
+            marginTop: scrolled ? 10 : 14,
+            background: navHover
+              ? 'rgba(250,250,248,0.78)'
+              : scrolled ? 'rgba(250,250,248,0.6)' : 'rgba(250,250,248,0.55)',
+            backdropFilter: 'blur(24px) saturate(200%) brightness(1.06)',
+            WebkitBackdropFilter: 'blur(24px) saturate(200%) brightness(1.06)',
+            border: '1px solid rgba(232,230,224,0.9)',
+            borderTop: '1px solid rgba(255,255,255,0.7)',
+            borderRadius: scrolled ? 18 : 999,
+            boxShadow: navHover
+              ? '0 12px 40px -12px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6)'
+              : scrolled
+                ? '0 4px 24px -8px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.5)'
+                : '0 8px 32px -12px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.6)',
+            padding: scrolled ? '12px 0' : '10px 0',
+          }}
+        >
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <motion.button
@@ -112,6 +129,7 @@ export default function Navbar() {
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
+        </div>
         </div>
       </motion.nav>
 
