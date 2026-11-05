@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'JetBrains Mono','SF Mono',Menlo,monospace">
+  <rect width="1200" height="630" fill="#141210"/>
+  <!-- title bar -->
+  <rect x="0" y="0" width="1200" height="44" fill="#1C1917"/>
+  <circle cx="28" cy="22" r="5" fill="#E8896F"/>
+  <circle cx="46" cy="22" r="5" fill="#D4D2CE"/>
+  <circle cx="64" cy="22" r="5" fill="#525252"/>
+  <text x="600" y="27" text-anchor="middle" font-size="13" fill="#A3A3A3" letter-spacing="3">CORTEX-OS / FLIGHT RECORDER</text>
+  <text x="1130" y="27" font-size="12" fill="#C4614A" letter-spacing="2">v0.9</text>
+
+  <!-- left: task rail -->
+  <rect x="32" y="72" width="240" height="526" rx="10" fill="#1C1917"/>
+  <text x="52" y="102" font-size="11" fill="#A3A3A3" letter-spacing="2">TASKS</text>
+
+  <g font-size="12">
+    <rect x="48" y="120" width="208" height="64" rx="8" fill="#26211E"/>
+    <circle cx="66" cy="140" r="4" fill="#C4614A"/>
+    <text x="80" y="144" fill="#FAFAF8" font-weight="bold">running</text>
+    <text x="60" y="166" fill="#A3A3A3" font-size="11">extract repo stats → gh</text>
+
+    <rect x="48" y="196" width="208" height="56" rx="8" fill="#221E1B"/>
+    <circle cx="66" cy="216" r="4" fill="#E8896F"/>
+    <text x="80" y="220" fill="#D4D2CE">queued</text>
+    <text x="60" y="238" fill="#78716C" font-size="11">fill signup form → shop.io</text>
+
+    <rect x="48" y="264" width="208" height="56" rx="8" fill="#221E1B"/>
+    <circle cx="66" cy="284" r="4" fill="#3D9A62"/>
+    <text x="80" y="288" fill="#D4D2CE">done</text>
+    <text x="60" y="306" fill="#78716C" font-size="11">scrape pricing → saas.com</text>
+
+    <rect x="48" y="332" width="208" height="56" rx="8" fill="#221E1B"/>
+    <circle cx="66" cy="352" r="4" fill="#3D9A62"/>
+    <text x="80" y="356" fill="#D4D2CE">done</text>
+    <text x="60" y="374" fill="#78716C" font-size="11">find cheap flight → tvl.io</text>
+  </g>
+
+  <text x="52" y="580" font-size="10" fill="#525252" letter-spacing="1">arq + redis queue</text>
+
+  <!-- center: tape frames -->
+  <text x="312" y="102" font-size="11" fill="#A3A3A3" letter-spacing="2">TAPE — STEP REPLAY</text>
+  <g>
+    <!-- frame 1 -->
+    <rect x="312" y="120" width="272" height="196" rx="10" fill="#221E1B"/>
+    <rect x="312" y="120" width="272" height="26" rx="10" fill="#2C2724"/>
+    <circle cx="330" cy="133" r="3" fill="#525252"/><circle cx="342" cy="133" r="3" fill="#525252"/><circle cx="354" cy="133" r="3" fill="#525252"/>
+    <rect x="368" y="127" width="200" height="12" rx="6" fill="#1C1917"/>
+    <text x="376" y="136" font-size="8" fill="#78716C">github.com/browser-use/browser-use</text>
+    <rect x="330" y="162" width="150" height="12" rx="3" fill="#3A342F"/>
+    <rect x="330" y="182" width="220" height="8" rx="3" fill="#2C2724"/>
+    <rect x="330" y="196" width="180" height="8" rx="3" fill="#2C2724"/>
+    <rect x="330" y="222" width="90" height="26" rx="5" fill="#C4614A"/>
+    <text x="344" y="239" font-size="10" fill="#141210" font-weight="bold">★ 4.2k</text>
+    <text x="330" y="282" font-size="10" fill="#E8896F">step 07 · click .star</text>
+    <text x="530" y="282" font-size="9" fill="#525252" text-anchor="end">00:31</text>
+
+    <!-- frame 2 -->
+    <rect x="604" y="120" width="272" height="196" rx="10" fill="#221E1B"/>
+    <rect x="604" y="120" width="272" height="26" rx="10" fill="#2C2724"/>
+    <circle cx="622" cy="133" r="3" fill="#525252"/><circle cx="634" cy="133" r="3" fill="#525252"/><circle cx="646" cy="133" r="3" fill="#525252"/>
+    <rect x="660" y="127" width="200" height="12" rx="6" fill="#1C1917"/>
+    <text x="668" y="136" font-size="8" fill="#78716C">github.com/browser-use/browser-use</text>
+    <rect x="622" y="162" width="200" height="12" rx="3" fill="#3A342F"/>
+    <rect x="622" y="182" width="230" height="8" rx="3" fill="#2C2724"/>
+    <rect x="622" y="196" width="160" height="8" rx="3" fill="#2C2724"/>
+    <rect x="622" y="214" width="200" height="8" rx="3" fill="#2C2724"/>
+    <rect x="622" y="240" width="120" height="40" rx="6" fill="#1C1917"/>
+    <text x="634" y="264" font-size="11" fill="#E8896F">{…result}</text>
+    <text x="622" y="282" font-size="10" fill="#E8896F">step 09 · extract</text>
+    <text x="822" y="282" font-size="9" fill="#525252" text-anchor="end">00:44</text>
+
+    <!-- frame 3 -->
+    <rect x="312" y="332" width="272" height="196" rx="10" fill="#221E1B"/>
+    <rect x="312" y="332" width="272" height="26" rx="10" fill="#2C2724"/>
+    <circle cx="330" cy="345" r="3" fill="#525252"/><circle cx="342" cy="345" r="3" fill="#525252"/><circle cx="354" cy="345" r="3" fill="#525252"/>
+    <rect x="368" y="339" width="200" height="12" rx="6" fill="#1C1917"/>
+    <text x="376" y="348" font-size="8" fill="#78716C">shop.io/signup</text>
+    <rect x="330" y="374" width="160" height="16" rx="4" fill="#2C2724"/>
+    <rect x="330" y="400" width="160" height="16" rx="4" fill="#2C2724"/>
+    <rect x="330" y="426" width="80" height="22" rx="5" fill="#3D9A62"/>
+    <text x="346" y="441" font-size="10" fill="#141210" font-weight="bold">submit</text>
+    <text x="330" y="494" font-size="10" fill="#E8896F">step 12 · fill form</text>
+    <text x="530" y="494" font-size="9" fill="#525252" text-anchor="end">01:12</text>
+
+    <!-- playhead -->
+    <rect x="312" y="552" width="564" height="24" rx="12" fill="#1C1917"/>
+    <rect x="324" y="563" width="380" height="2" fill="#2C2724"/>
+    <rect x="324" y="563" width="190" height="2" fill="#C4614A"/>
+    <circle cx="514" cy="564" r="6" fill="#E8896F"/>
+    <text x="822" y="569" font-size="10" fill="#525252" text-anchor="end">replay ▸</text>
+  </g>
+
+  <!-- right: approvals + ops -->
+  <rect x="916" y="72" width="252" height="200" rx="10" fill="#1C1917"/>
+  <text x="936" y="102" font-size="11" fill="#A3A3A3" letter-spacing="2">APPROVALS</text>
+  <g font-size="11">
+    <rect x="932" y="118" width="220" height="52" rx="8" fill="#26211E"/>
+    <text x="948" y="138" fill="#D4D2CE">POST /pay · $49</text>
+    <rect x="948" y="148" width="66" height="16" rx="8" fill="#3D9A62"/>
+    <text x="958" y="160" fill="#141210" font-size="9" font-weight="bold">approve</text>
+    <rect x="1022" y="148" width="52" height="16" rx="8" fill="#3A342F"/>
+    <text x="1036" y="160" fill="#A3A3A3" font-size="9">deny</text>
+    <rect x="932" y="182" width="220" height="52" rx="8" fill="#26211E"/>
+    <text x="948" y="202" fill="#D4D2CE">delete rows · 128</text>
+    <rect x="948" y="212" width="66" height="16" rx="8" fill="#3D9A62"/>
+    <text x="958" y="224" fill="#141210" font-size="9" font-weight="bold">approve</text>
+    <rect x="1022" y="212" width="52" height="16" rx="8" fill="#3A342F"/>
+    <text x="1036" y="224" fill="#A3A3A3" font-size="9">deny</text>
+  </g>
+
+  <rect x="916" y="288" width="252" height="310" rx="10" fill="#1C1917"/>
+  <text x="936" y="318" font-size="11" fill="#A3A3A3" letter-spacing="2">OPS</text>
+  <g font-size="12">
+    <text x="936" y="350" fill="#78716C">tasks / day</text>
+    <text x="1148" y="350" fill="#FAFAF8" text-anchor="end" font-weight="bold">142</text>
+    <text x="936" y="380" fill="#78716C">success</text>
+    <text x="1148" y="380" fill="#3D9A62" text-anchor="end" font-weight="bold">96.4%</text>
+    <text x="936" y="410" fill="#78716C">avg steps</text>
+    <text x="1148" y="410" fill="#FAFAF8" text-anchor="end" font-weight="bold">11.8</text>
+    <text x="936" y="440" fill="#78716C">cost / task</text>
+    <text x="1148" y="440" fill="#E8896F" text-anchor="end" font-weight="bold">$0.41</text>
+    <text x="936" y="470" fill="#78716C">mind2web</text>
+    <text x="1148" y="470" fill="#FAFAF8" text-anchor="end" font-weight="bold">87.3</text>
+    <rect x="936" y="494" width="212" height="80" rx="8" fill="#26211E"/>
+    <text x="952" y="520" font-size="10" fill="#A3A3A3" letter-spacing="1">GUARDRAILS</text>
+    <text x="952" y="544" font-size="10" fill="#D4D2CE">allowlist · approvals</text>
+    <text x="952" y="562" font-size="10" fill="#D4D2CE">cost budgets · gates</text>
+  </g>
+</svg>
