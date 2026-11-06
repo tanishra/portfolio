@@ -152,3 +152,24 @@ section, .btn-accent, .btn-ghost {
 }
 section { position: relative; }
 img[alt] { display: inline-block; }
+
+/* ── Responsive patches ────────────────────────────────────── */
+html, body { overflow-x: hidden; }
+
+@media (max-width: 768px) {
+  /* Contributions: stat rail above heatmap */
+  .contrib-card { flex-direction: column !important; }
+  .contrib-stats { width: 100% !important; border-right: none !important; border-bottom: 1px solid #E8E6E0; flex-direction: row !important; flex-wrap: wrap; }
+  .contrib-stats > div { flex: 1 1 45% !important; border-bottom: none !important; }
+
+  /* Projects expand modal: stack columns */
+  .proj-modal-grid { grid-template-columns: 1fr !important; }
+}
+
+/* VoiceAgent two-col on desktop only */
+@media (min-width: 1024px) {
+  .voice-grid { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 1023px) {
+  .voice-left { border-right: none !important; border-bottom: 1px solid #E8E6E0; }
+}

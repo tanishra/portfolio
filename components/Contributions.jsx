@@ -174,10 +174,10 @@ export default function Contributions() {
           initial="hidden" animate={inView ? 'show' : 'hidden'} variants={fadeUp(0.18)}
           style={{ borderRadius: 20, border: '1px solid #E8E6E0', background: '#FAFAF8', overflow: 'hidden', boxShadow: '0 2px 20px rgba(0,0,0,0.05)' }}
         >
-          <div style={{ display:'flex', flexDirection:'row' }}>
+          <div className="contrib-card" style={{ display:'flex', flexDirection:'row' }}>
 
             {/* LEFT — vertical stat strip */}
-            <div style={{ flexShrink:0, width:180, borderRight:'1px solid #E8E6E0', display:'flex', flexDirection:'column' }}>
+            <div className="contrib-stats" style={{ flexShrink:0, width:180, borderRight:'1px solid #E8E6E0', display:'flex', flexDirection:'column' }}>
               {stats.map((s, i) => (
                 <motion.div
                   key={s.label}

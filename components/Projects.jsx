@@ -101,7 +101,7 @@ function ExpandModal({ project, onClose }) {
 
             {/* Content Area */}
             <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '40px 32px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 48 }}>
+              <div className="proj-modal-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 48 }}>
                 {/* Main Info */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
                   <div>
@@ -299,7 +299,7 @@ export default function Projects() {
         {/* Projects Grid */}
         <motion.div
           initial="hidden" animate={inView ? 'show' : 'hidden'} variants={fadeUp(0.3)}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 32 }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(340px, 100%), 1fr))', gap: 32 }}
         >
           {[...featured, ...others].map((p, i) => (
             <ProjectCard key={p.name} project={p} index={i} inView={inView} onOpen={setOpenProject} />

@@ -154,10 +154,10 @@ export default function VoiceAgent() {
 
         <motion.div initial="hidden" animate={inView?'show':'hidden'} variants={fadeUp(0.1)}
           style={{borderRadius:32,border:'1px solid #E8E6E0',background:'#FAFAF8',overflow:'hidden',boxShadow:'0 4px 24px rgba(0,0,0,0.04)'}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr lg:1fr'}}>
+          <div className="voice-grid" style={{display:'grid',gridTemplateColumns:'1fr'}}>
 
             {/* Interface Area */}
-            <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:32,padding:'5rem 3rem',borderRight:'1px solid #E8E6E0',background:'#FFFFFF'}}>
+            <div className="voice-left" style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:32,padding:'clamp(2.5rem,6vw,5rem) clamp(1.25rem,4vw,3rem)',borderRight:'1px solid #E8E6E0',background:'#FFFFFF'}}>
               <div style={{position:'relative',display:'flex',alignItems:'center',justifyContent:'center'}}>
                 {callState === 'active' && [1,2,3].map(i=>(
                   <motion.div key={i} style={{position:'absolute',inset:0,borderRadius:'50%',border:'1px solid #C4614A'}}
@@ -240,7 +240,7 @@ export default function VoiceAgent() {
             </div>
 
             {/* Info Area */}
-            <div style={{display:'flex',flexDirection:'column',justifyContent:'center',gap:32,padding:'5rem 3rem'}}>
+            <div style={{display:'flex',flexDirection:'column',justifyContent:'center',gap:32,padding:'clamp(2.5rem,6vw,5rem) clamp(1.25rem,4vw,3rem)'}}>
               <div>
                 <h2 className="font-display" style={{fontSize:'2.5rem',fontWeight:800,color:'#111111',lineHeight:1.1,marginBottom:16}}>
                   Talk to <br /><span className="gradient-text italic font-normal">Friday.</span>
