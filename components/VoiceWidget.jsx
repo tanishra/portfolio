@@ -38,6 +38,7 @@ function SoundWave({ active }) {
 export default function VoiceWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [callState, setCallState] = useState('idle'); // 'idle', 'connecting', 'active'
+  const [callError, setCallError] = useState(null);
   const [timeLeft, setTimeLeft] = useState(CALL_LIMIT_SECONDS);
   const [logIndex, setLogIndex] = useState(0);
   
@@ -101,8 +102,11 @@ export default function VoiceWidget() {
       return;
     }
 
+    if (!navigator.onLine) { setCallError('offline — check connection'); return; }
+
     try {
       setCallState('connecting');
+      setCallError(null);
       
       const res = await fetch('/api/friday-token', { method: 'POST' });
       if (!res.ok) throw new Error("Failed to reach Token Bridge");
@@ -135,6 +139,11 @@ export default function VoiceWidget() {
 
     } catch (err) {
       console.error("Friday error:", err);
+      setCallError(
+        err.name === 'NotAllowedError' || /permission|denied/i.test(err.message)
+          ? 'mic blocked — allow in browser'
+          : "couldn't reach friday — retry"
+      );
       setCallState('idle');
     }
   };
@@ -293,6 +302,11 @@ export default function VoiceWidget() {
                   <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', color: callState === 'active' ? '#C4614A' : '#A3A3A3', marginTop: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
                     {callState === 'idle' && 'Click to start'}
                     {callState === 'active' && `Friday Listening... ${formatTime(timeLeft)}`}
+                  </p>
+                )}
+                {callError && (
+                  <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.6rem', color: '#DC2626', marginTop: '8px', letterSpacing: '0.03em', textAlign: 'center' }}>
+                    {callError}
                   </p>
                 )}
               </div>

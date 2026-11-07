@@ -47,12 +47,19 @@ export default function Contact() {
 
   const onSubmit = async e => {
     e.preventDefault(); setStatus('loading'); setErrMsg('');
+    if (!navigator.onLine) { setStatus('error'); setErrMsg("You're offline — check your connection."); return; }
     try {
-      const res  = await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(form) });
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 10000);
+      const res  = await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(form), signal: ctrl.signal });
+      clearTimeout(timer);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong');
       setStatus('success'); setForm({ name:'', email:'', message:'' });
-    } catch(err) { setStatus('error'); setErrMsg(err.message); }
+    } catch(err) {
+      setStatus('error');
+      setErrMsg(err.name === 'AbortError' ? 'Request timed out — try again.' : err.message);
+    }
   };
 
   return (

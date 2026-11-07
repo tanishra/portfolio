@@ -24,6 +24,7 @@ function ProjectImage({ src, alt, className = "", style = {} }) {
       src={src} alt={alt} 
       className={`w-full h-full object-cover ${className}`} 
       style={style}
+      loading="lazy"
       onError={() => setError(true)}
     />
   );

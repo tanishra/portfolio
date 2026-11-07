@@ -44,7 +44,14 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <JsonLd />
       </head>
-      <body>{children}</body>
+      <body>
+        <noscript>
+          <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'monospace', color: '#525252' }}>
+            This site needs JavaScript — enable it to view the portfolio.
+          </div>
+        </noscript>
+        {children}
+      </body>
     </html>
   );
 }

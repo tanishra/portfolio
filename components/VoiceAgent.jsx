@@ -39,6 +39,7 @@ export default function VoiceAgent() {
   const inView=useInView(ref,{once:true,margin:'-80px'});
   
   const [callState, setCallState] = useState('idle'); // 'idle', 'connecting', 'active'
+  const [callError, setCallError] = useState(null);
   const [timeLeft, setTimeLeft] = useState(CALL_LIMIT_SECONDS);
   const [logIndex, setLogIndex] = useState(0);
   
@@ -93,8 +94,11 @@ export default function VoiceAgent() {
       return;
     }
 
+    if (!navigator.onLine) { setCallError('offline — check your connection'); return; }
+
     try {
       setCallState('connecting');
+      setCallError(null);
       
       // 1. Handshake with local Token Bridge
       const res = await fetch('/api/friday-token', { method: 'POST' });
@@ -134,6 +138,11 @@ export default function VoiceAgent() {
 
     } catch (err) {
       console.error("Friday Connection Error:", err);
+      setCallError(
+        err.name === 'NotAllowedError' || /permission|denied/i.test(err.message)
+          ? 'mic blocked — allow access in browser settings'
+          : "couldn't reach friday — try again"
+      );
       setCallState('idle');
     }
   };
@@ -233,6 +242,11 @@ export default function VoiceAgent() {
                         {callState === 'idle' && 'Click to Start Conversation'}
                         {callState === 'active' && `Friday Listening... ${formatTime(timeLeft)}`}
                       </p>
+                      {callError && (
+                        <p style={{fontFamily:'JetBrains Mono',fontSize:'0.65rem',color:'#DC2626',margin:'6px 0 0',letterSpacing:'0.03em'}}>
+                          {callError}
+                        </p>
+                      )}
                     </div>
                   </>
                 )}
