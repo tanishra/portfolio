@@ -38,7 +38,12 @@ export async function POST(request) {
 
     // ── Parse + validate body
     const body = await request.json();
-    const { name, email, message } = body;
+    const { name, email, message, website } = body;
+
+    // Honeypot: bots fill the invisible field — fake success, send nothing
+    if (website?.trim()) {
+      return NextResponse.json({ success: true }, { status: 200 });
+    }
 
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
       return NextResponse.json(
@@ -151,23 +156,23 @@ export async function POST(request) {
         <html>
         <head>
           <style>
-            body { font-family: -apple-system, sans-serif; background: #080B12; color: #F0F4FF; margin: 0; padding: 0; }
+            body { font-family: -apple-system, sans-serif; background: #FAFAF8; color: #111111; margin: 0; padding: 0; }
             .container { max-width: 560px; margin: 0 auto; padding: 40px 24px; }
-            .accent { color: #00D4FF; }
+            .accent { color: #C4614A; }
           </style>
         </head>
         <body>
           <div class="container">
             <h2>Hey ${name}! 👋</h2>
-            <p style="color: #9CA3AF; line-height: 1.6;">
+            <p style="color: #525252; line-height: 1.6;">
               Got your message — I'll get back to you soon (usually within 24 hours).
             </p>
-            <p style="color: #9CA3AF; line-height: 1.6;">
+            <p style="color: #525252; line-height: 1.6;">
               In the meantime, feel free to check out my projects on 
-              <a href="https://github.com/tanishra" style="color: #00D4FF;">GitHub</a> or connect on 
-              <a href="https://linkedin.com/in/tr26" style="color: #00D4FF;">LinkedIn</a>.
+              <a href="https://github.com/tanishra" style="color: #C4614A;">GitHub</a> or connect on 
+              <a href="https://linkedin.com/in/tr26" style="color: #C4614A;">LinkedIn</a>.
             </p>
-            <p style="color: #6B7280; font-size: 13px; margin-top: 32px;">— Tanish Rajput, AI Engineer</p>
+            <p style="color: #A3A3A3; font-size: 13px; margin-top: 32px;">— Tanish Rajput, AI Engineer</p>
           </div>
         </body>
         </html>

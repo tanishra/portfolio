@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "node -e \"const fs=require('fs'),p='node_modules/tsconfig.json';fs.existsSync('node_modules')&&!fs.existsSync(p)&&fs.writeFileSync(p,JSON.stringify({compilerOptions:{target:'es2022',module:'esnext',strict:true,skipLibCheck:true}}))\""
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.1.0",
     "framer-motion": "^11.3.8",
     "lenis": "^1.1.9",
     "livekit-client": "^2.18.3",

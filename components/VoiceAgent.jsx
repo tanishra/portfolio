@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Mic, PhoneOff, Cpu } from 'lucide-react';
 import { Room, RoomEvent } from 'livekit-client';
+import { track } from '@vercel/analytics';
 
 const fadeUp = (d=0) => ({ hidden:{opacity:0,y:24}, show:{opacity:1,y:0,transition:{duration:0.7,ease:[0.16,1,0.3,1],delay:d}} });
 const CALL_LIMIT_SECONDS = 120;
@@ -97,6 +98,7 @@ export default function VoiceAgent() {
     if (!navigator.onLine) { setCallError('offline — check your connection'); return; }
 
     try {
+      track('friday_call');
       setCallState('connecting');
       setCallError(null);
       
@@ -177,6 +179,7 @@ export default function VoiceAgent() {
 
                 <motion.button
                   onClick={toggleCall}
+                  aria-label={callState === 'active' ? 'End call' : 'Start call with Friday'}
                   style={{
                     position:'relative',zIndex:1,width:128,height:128,borderRadius:'50%',
                     display:'flex',alignItems:'center',justifyContent:'center',

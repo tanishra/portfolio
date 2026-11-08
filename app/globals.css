@@ -153,6 +153,14 @@ section, .btn-accent, .btn-ghost {
 section { position: relative; }
 img[alt] { display: inline-block; }
 
+/* ── Accessibility ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
 /* ── Responsive patches ────────────────────────────────────── */
 html, body { overflow-x: hidden; }
 

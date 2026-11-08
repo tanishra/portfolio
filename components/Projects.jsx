@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { ExternalLink, ArrowUpRight, X, Maximize2, Image as ImageIcon, Github, Terminal } from 'lucide-react';
 import { projects } from '../lib/data';
@@ -20,11 +21,12 @@ function ProjectImage({ src, alt, className = "", style = {} }) {
     );
   }
   return (
-    <img 
-      src={src} alt={alt} 
-      className={`w-full h-full object-cover ${className}`} 
+    <Image
+      src={src} alt={alt}
+      fill
+      sizes="(max-width: 768px) 100vw, 400px"
+      className={`object-cover ${className}`}
       style={style}
-      loading="lazy"
       onError={() => setError(true)}
     />
   );
@@ -32,8 +34,25 @@ function ProjectImage({ src, alt, className = "", style = {} }) {
 
 // ── Expand Modal ────────────────────────────────────────────────
 function ExpandModal({ project, onClose }) {
+  const dialogRef = useRef(null);
+  const prevFocusRef = useRef(null);
+
   useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    prevFocusRef.current = document.activeElement;
+    dialogRef.current?.querySelector('button')?.focus();
+    return () => prevFocusRef.current?.focus?.();
+  }, []);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab' || !dialogRef.current) return;
+      const focusables = dialogRef.current.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
+      if (!focusables.length) return;
+      const first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [onClose]);
@@ -59,6 +78,10 @@ function ExpandModal({ project, onClose }) {
         }}
       >
         <motion.div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${project.name} details`}
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.98 }}
@@ -84,7 +107,7 @@ function ExpandModal({ project, onClose }) {
               <div style={{ position: 'absolute', top: 24, left: 32, right: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
                 <div style={{ display: 'flex', gap: 12 }}>
                 </div>
-                <button onClick={onClose} style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
+                <button onClick={onClose} aria-label="Close project details" style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
                   <X size={20} />
                 </button>
               </div>
@@ -173,6 +196,12 @@ function ProjectCard({ project, index, onOpen, inView }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => onOpen(project)}
+      role="button"
+      tabIndex={0}
+      aria-label={`Open ${project.name} details`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(project); }
+      }}
       style={{
         borderRadius: 24,
         overflow: 'hidden',

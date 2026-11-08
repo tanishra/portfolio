@@ -36,7 +36,14 @@ export default function Home() {
 
   return (
     <main>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:px-4 focus:py-2 focus:bg-[#111111] focus:text-[#FAFAF8] focus:rounded-lg focus:text-sm focus:font-medium"
+      >
+        Skip to content
+      </a>
       <Navbar />
+      <div id="main-content">
       <Hero />
       <About />
       <Experience />
@@ -46,6 +53,7 @@ export default function Home() {
       <VoiceAgent />
       <Contact />
       <Footer />
+      </div>
       <VoiceWidget />
     </main>
   );

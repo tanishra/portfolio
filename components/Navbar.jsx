@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Download, ArrowUpRight } from 'lucide-react';
+import { track } from '@vercel/analytics';
 import { personal } from '../lib/data';
 
 const navLinks = [
@@ -109,6 +110,7 @@ export default function Navbar() {
           <div className="hidden md:flex">
             <motion.a
               href={personal.resumeUrl}
+              onClick={() => track('resume_download')}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-accent"
@@ -126,6 +128,7 @@ export default function Navbar() {
             className="md:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -159,6 +162,7 @@ export default function Navbar() {
             ))}
             <motion.a
               href={personal.resumeUrl}
+              onClick={() => track('resume_download')}
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 16 }}

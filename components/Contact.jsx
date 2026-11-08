@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Send, Mail, FileText, CheckCircle, AlertCircle, Loader, ArrowUpRight } from 'lucide-react';
 import { personal, social } from '../lib/data';
+import { track } from '@vercel/analytics';
 
 const fadeUp = (d=0) => ({ hidden:{opacity:0,y:24}, show:{opacity:1,y:0,transition:{duration:0.7,ease:[0.16,1,0.3,1],delay:d}} });
 
@@ -39,7 +40,7 @@ function Field({ label, id, type='text', value, onChange, placeholder, required,
 export default function Contact() {
   const ref    = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
-  const [form,   setForm]   = useState({ name:'', email:'', message:'' });
+  const [form,   setForm]   = useState({ name:'', email:'', message:'', website:'' });
   const [status, setStatus] = useState('idle');
   const [errMsg, setErrMsg] = useState('');
 
@@ -55,7 +56,8 @@ export default function Contact() {
       clearTimeout(timer);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong');
-      setStatus('success'); setForm({ name:'', email:'', message:'' });
+      track('contact_submit');
+      setStatus('success'); setForm({ name:'', email:'', message:'', website:'' });
     } catch(err) {
       setStatus('error');
       setErrMsg(err.name === 'AbortError' ? 'Request timed out — try again.' : err.message);
@@ -185,15 +187,22 @@ export default function Contact() {
                 <Field label="Message" id="message" type="textarea" value={form.message} onChange={onChange}
                   placeholder="Hey Tanish, I have an interesting AI project..." required rows={5} />
 
+                {/* Honeypot — invisible to humans */}
+                <input
+                  type="text" name="website" value={form.website || ''} onChange={onChange}
+                  tabIndex={-1} autoComplete="off" aria-hidden="true"
+                  style={{position:'absolute',left:'-9999px',width:1,height:1,opacity:0,pointerEvents:'none'}}
+                />
+
                 {/* Status banners */}
                 {status === 'success' && (
-                  <motion.div initial={{opacity:0,y:-6}} animate={{opacity:1,y:0}}
+                  <motion.div initial={{opacity:0,y:-6}} animate={{opacity:1,y:0}} role="status" aria-live="polite"
                     style={{display:'flex',alignItems:'center',gap:8,padding:'10px 14px',borderRadius:10,border:'1px solid rgba(45,125,82,0.25)',background:'#F0FAF5',color:'var(--success)'}}>
                     <CheckCircle size={14}/><span style={{fontFamily:'Inter,sans-serif',fontSize:'0.82rem',fontWeight:500}}>Message sent! I'll be in touch soon.</span>
                   </motion.div>
                 )}
                 {status === 'error' && (
-                  <motion.div initial={{opacity:0,y:-6}} animate={{opacity:1,y:0}}
+                  <motion.div initial={{opacity:0,y:-6}} animate={{opacity:1,y:0}} role="alert"
                     style={{display:'flex',alignItems:'center',gap:8,padding:'10px 14px',borderRadius:10,border:'1px solid rgba(220,38,38,0.2)',background:'#FEF2F2',color:'#DC2626'}}>
                     <AlertCircle size={14}/><span style={{fontFamily:'Inter,sans-serif',fontSize:'0.82rem'}}>{errMsg}</span>
                   </motion.div>

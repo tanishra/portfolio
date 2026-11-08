@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, PhoneOff, X, Cpu, Globe2, Zap } from 'lucide-react';
 import { Room, RoomEvent } from 'livekit-client';
+import { track } from '@vercel/analytics';
 
 const CALL_LIMIT_SECONDS = 120;
 
@@ -105,6 +106,7 @@ export default function VoiceWidget() {
     if (!navigator.onLine) { setCallError('offline — check connection'); return; }
 
     try {
+      track('friday_call');
       setCallState('connecting');
       setCallError(null);
       
@@ -158,12 +160,14 @@ export default function VoiceWidget() {
     <>
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? 'Close Friday voice assistant' : 'Talk to Friday — AI voice assistant'}
+        aria-expanded={isOpen}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         style={{
           position: 'fixed',
           bottom: '2rem',
-          right: '2.5rem',
+          right: 'clamp(1rem, 5vw, 2.5rem)',
           zIndex: 100,
           width: '56px',
           height: '56px',
@@ -209,7 +213,6 @@ export default function VoiceWidget() {
             style={{
               position: 'fixed',
               bottom: '6.5rem',
-              right: '2.5rem',
               zIndex: 100,
               width: 'min(320px, calc(100vw - 32px))',
               right: 'clamp(1rem, 5vw, 2.5rem)',
@@ -250,6 +253,7 @@ export default function VoiceWidget() {
                 ))}
                 <motion.button
                   onClick={toggleCall}
+                  aria-label={callState === 'active' || callState === 'connecting' ? 'End call' : 'Start call with Friday'}
                   style={{
                     position: 'relative',
                     zIndex: 10,

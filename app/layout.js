@@ -1,5 +1,7 @@
 import './globals.css';
 import JsonLd from '../components/JsonLd';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata = {
   title: {
@@ -51,6 +53,8 @@ export default function RootLayout({ children }) {
           </div>
         </noscript>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

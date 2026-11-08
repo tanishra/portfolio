@@ -175,6 +175,7 @@ export default function Skills() {
           <div className="flex p-1 bg-[#F4F2EE] rounded-2xl border border-[#E8E6E0] mb-8">
             {['skills', 'tools'].map((v) => (
               <button key={v} onClick={() => { setView(v); if(v==='tools') setActiveToolCat('All'); else setActiveKey('languages'); }}
+                aria-pressed={view === v}
                 className={`px-8 py-2.5 rounded-xl font-body text-sm font-semibold transition-all duration-300 ${view === v ? 'bg-white text-[#111111] shadow-sm' : 'text-[#A3A3A3] hover:text-[#525252]'}`}>
                 {v === 'skills' ? 'Core Stack' : 'AI Ecosystem'}
               </button>
@@ -185,7 +186,7 @@ export default function Skills() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}
             className="flex flex-wrap justify-center gap-2 p-1.5 rounded-2xl bg-white border border-[#E8E6E0] shadow-sm backdrop-blur-md">
             {categories.map((cat) => (
-              <button key={cat.key} onClick={() => setKey(cat.key)}
+              <button key={cat.key} onClick={() => setKey(cat.key)} aria-pressed={currentActiveKey === cat.key}
                 className={`px-5 py-2.5 rounded-xl font-body text-sm font-medium transition-all duration-300 relative ${currentActiveKey === cat.key ? 'text-white' : 'text-[#525252] hover:bg-[#F4F2EE]'}`}>
                 {currentActiveKey === cat.key && (
                   <motion.div layoutId="activeTab" className="absolute inset-0 bg-[#C4614A] rounded-xl" transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />

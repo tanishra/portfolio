@@ -253,8 +253,8 @@ export default function Contributions() {
                     </button>
                   </div>
                 ) : (
-                  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ display:'flex', marginBottom:6, width: '100%', paddingLeft: '24px' }}>
+                  <div role="figure" aria-label={`GitHub contribution heatmap, ${totalContributions} contributions in the past year`} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div aria-hidden="true" style={{ display:'flex', marginBottom:6, width: '100%', paddingLeft: '24px' }}>
                       <div style={{ position:'relative', flex:1, height:14 }}>
                         {monthLabels.map(({ wi, label }) => (
                           <span
@@ -282,7 +282,7 @@ export default function Contributions() {
                         ))}
                       </div>
 
-                      <div style={{ display:'flex', gap:3, flex: 1, justifyContent: 'space-between' }}>
+                      <div aria-hidden="true" style={{ display:'flex', gap:3, flex: 1, justifyContent: 'space-between' }}>
                         {grid.map((week, wi) => (
                           <div key={wi} style={{ display:'flex', flexDirection:'column', gap:3, flex: 1 }}>
                             {week.map((cell, di) => {
