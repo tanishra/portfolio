@@ -1,5 +1,6 @@
 'use client';
 
+import ScrambleText from './ScrambleText';
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { MapPin, Target } from 'lucide-react';
@@ -40,7 +41,7 @@ export default function About() {
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.div initial="hidden" animate={inView ? 'show' : 'hidden'} variants={fadeUp(0)} className="mb-16">
-          <span className="section-label">01 — About</span>
+          <ScrambleText className="section-label" text="01 — About" />
           <div className="section-divider mt-3" />
         </motion.div>
 

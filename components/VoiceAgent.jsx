@@ -1,4 +1,5 @@
 'use client';
+import ScrambleText from './ScrambleText';
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Mic, PhoneOff, Cpu } from 'lucide-react';
@@ -159,7 +160,7 @@ export default function VoiceAgent() {
     <section id="voice" ref={ref} style={{padding:'7rem 0',background:'#FAFAF8'}}>
       <div style={{maxWidth:1152,margin:'0 auto',padding:'0 1.5rem'}}>
         <motion.div initial="hidden" animate={inView?'show':'hidden'} variants={fadeUp(0)} style={{marginBottom:'4rem'}}>
-          <span className="section-label">07 — Voice Agent</span>
+          <ScrambleText className="section-label" text="07 — Voice Agent" />
           <div className="section-divider" style={{marginTop:12}} />
         </motion.div>
 

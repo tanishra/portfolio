@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Mail, MoveRight } from 'lucide-react';
+import Magnetic from './Magnetic';
+import useISTTime from '../lib/useISTTime';
 import { personal, social } from '../lib/data';
 
 /* ── Typewriter ──────────────────────────────────────────────── */
@@ -175,6 +177,7 @@ function ThreeCanvas() {
 /* ── Main ────────────────────────────────────────────────────── */
 export default function Hero() {
   const typed = useTypewriter(personal.taglines, 70, 38, 2200);
+  const time = useISTTime();
 
   const container = {
     hidden: {},
@@ -218,7 +221,7 @@ export default function Hero() {
               <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: 'var(--success)' }} />
             </span>
             <span className="font-mono text-2xs tracking-widest uppercase text-[var(--text-muted)]">
-              Available for opportunities
+              Available for opportunities{time ? ` · ${time} IST` : ''}
             </span>
           </motion.div>
 
@@ -274,23 +277,27 @@ export default function Hero() {
 
           {/* CTAs */}
           <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-12">
-            <motion.button
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              className="btn-accent"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              View Projects
-              <MoveRight size={15} />
-            </motion.button>
-            <motion.button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="btn-ghost"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Get in Touch
-            </motion.button>
+            <Magnetic>
+              <motion.button
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                className="btn-accent"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                View Projects
+                <MoveRight size={15} />
+              </motion.button>
+            </Magnetic>
+            <Magnetic>
+              <motion.button
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="btn-ghost"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Get in Touch
+              </motion.button>
+            </Magnetic>
           </motion.div>
 
           {/* Social handles */}
@@ -300,6 +307,7 @@ export default function Hero() {
               { href: social.linkedin, icon: <LinkedinIcon />, label: 'LinkedIn' },
               { href: social.email,    icon: <Mail size={17} />, label: 'Email' },
             ].map(({ href, icon, label }) => (
+              <Magnetic key={label} strength={0.4}>
               <motion.a
                 key={label}
                 href={href}
@@ -307,12 +315,13 @@ export default function Hero() {
                 rel="noopener noreferrer"
                 aria-label={label}
                 className="p-2.5 rounded-lg border text-[var(--text-muted)] hover:text-[var(--accent)] transition-all duration-200"
-                style={{ borderColor: 'var(--border)' }}
+                style={{ borderColor: 'var(--border)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                 whileHover={{ scale: 1.08, y: -2, borderColor: 'var(--accent)' }}
                 whileTap={{ scale: 0.95 }}
               >
                 {icon}
               </motion.a>
+              </Magnetic>
             ))}
           </motion.div>
         </motion.div>

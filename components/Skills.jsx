@@ -1,5 +1,6 @@
 'use client';
 
+import ScrambleText from './ScrambleText';
 import { useRef, useState, useMemo } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { skills, aiTools } from '../lib/data';
@@ -162,7 +163,7 @@ export default function Skills() {
       <div className="max-w-7xl mx-auto px-6">
         {/* ── Section label ── */}
         <motion.div initial="hidden" animate={isInView ? 'show' : 'hidden'} variants={fadeUp(0)} style={{ marginBottom: '4rem' }}>
-          <span className="section-label">03 — Skills</span>
+          <ScrambleText className="section-label" text="03 — Skills" />
           <div className="section-divider" style={{ marginTop: 12 }} />
         </motion.div>
 

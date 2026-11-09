@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { Menu, X, Download, ArrowUpRight } from 'lucide-react';
 import { track } from '@vercel/analytics';
+import Magnetic from './Magnetic';
 import { personal } from '../lib/data';
 
 const navLinks = [
@@ -15,6 +16,8 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
   const [scrolled,       setScrolled]       = useState(false);
   const [menuOpen,       setMenuOpen]       = useState(false);
   const [activeSection,  setActiveSection]  = useState('');
@@ -40,6 +43,12 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Scroll progress hairline */}
+      <motion.div
+        aria-hidden="true"
+        className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left"
+        style={{ scaleX: progress, background: 'var(--accent)' }}
+      />
       <motion.nav
         initial={{ y: -64, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -107,20 +116,29 @@ export default function Navbar() {
           </div>
 
           {/* Resume CTA */}
-          <div className="hidden md:flex">
-            <motion.a
-              href={personal.resumeUrl}
-              onClick={() => track('resume_download')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-accent"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', gap: '0.375rem' }}
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => window.dispatchEvent(new Event('open-cmdk'))}
+              aria-label="Open command palette"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[var(--border)] font-mono text-[0.6rem] text-[var(--text-muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors"
             >
-              <Download size={13} />
-              Resume
-            </motion.a>
+              ⌘K
+            </button>
+            <Magnetic>
+              <motion.a
+                href={personal.resumeUrl}
+                onClick={() => track('resume_download')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-accent"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', gap: '0.375rem' }}
+              >
+                <Download size={13} />
+                Resume
+              </motion.a>
+            </Magnetic>
           </div>
 
           {/* Mobile menu toggle */}

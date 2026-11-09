@@ -1,4 +1,5 @@
 'use client';
+import ScrambleText from './ScrambleText';
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Send, Mail, FileText, CheckCircle, AlertCircle, Loader, ArrowUpRight } from 'lucide-react';
@@ -70,7 +71,7 @@ export default function Contact() {
 
         {/* ── Section label ── */}
         <motion.div initial="hidden" animate={inView?'show':'hidden'} variants={fadeUp(0)} style={{marginBottom:'4rem'}}>
-          <span className="section-label">08 — Contact</span>
+          <ScrambleText className="section-label" text="08 — Contact" />
           <div className="section-divider" style={{marginTop:12}} />
         </motion.div>
 

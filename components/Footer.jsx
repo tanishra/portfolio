@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, FileText, Eye, ArrowUp } from 'lucide-react';
 import { personal, social } from '../lib/data';
+import useISTTime from '../lib/useISTTime';
 
 const footerLinks = [
   { label:'GitHub',   href:social.github,      icon:<GH/> },
@@ -70,6 +71,7 @@ function VisitorCounter() {
 }
 
 export default function Footer() {
+  const time = useISTTime();
   const scrollTop=()=>window.scrollTo({top:0,behavior:'smooth'});
   return (
     <footer style={{borderTop:'1px solid var(--border)',paddingTop:'4rem',paddingBottom:'2.5rem',background:'var(--bg)'}}>
@@ -81,6 +83,11 @@ export default function Footer() {
             </button>
             <p style={{fontFamily:'Inter,sans-serif',fontSize:'0.8rem',color:'var(--text-muted)',maxWidth:260,lineHeight:1.6}}>AI Engineer building LLM systems, voice agents, and AI-powered products.</p>
             <VisitorCounter/>
+            {time && (
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6rem', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
+                Noida, IN · {time} IST
+              </span>
+            )}
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:8}}>
             <p style={{fontFamily:'JetBrains Mono,monospace',fontSize:'0.6rem',textTransform:'uppercase',letterSpacing:'0.15em',color:'var(--text-muted)',marginBottom:4}}>Connect</p>

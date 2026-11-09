@@ -12,6 +12,8 @@ import VoiceAgent from '../components/VoiceAgent';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import VoiceWidget from '../components/VoiceWidget';
+import CommandPalette from '../components/CommandPalette';
+import EasterEgg from '../components/EasterEgg';
 
 export default function Home() {
   useEffect(() => {
@@ -55,6 +57,8 @@ export default function Home() {
       <Footer />
       </div>
       <VoiceWidget />
+      <CommandPalette />
+      <EasterEgg />
     </main>
   );
 }

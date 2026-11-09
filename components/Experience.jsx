@@ -1,5 +1,6 @@
 'use client';
 
+import ScrambleText from './ScrambleText';
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence, useInView, useScroll, useSpring, useReducedMotion } from 'framer-motion';
 import { Calendar, Terminal, Activity } from 'lucide-react';
@@ -228,7 +229,7 @@ export default function Experience() {
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.div initial="hidden" animate={inView ? 'show' : 'hidden'} variants={fadeUp(0)} className="mb-24 text-center lg:text-left">
-          <span className="section-label">02 — Experience</span>
+          <ScrambleText className="section-label" text="02 — Experience" />
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mt-4">
             <h2 className="font-display font-bold leading-none text-5xl md:text-7xl text-[#111111]">
               Where I've <span className="gradient-text italic font-normal">deployed.</span>

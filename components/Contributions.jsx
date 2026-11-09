@@ -1,5 +1,6 @@
 'use client';
 
+import ScrambleText from './ScrambleText';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { GitCommit, Flame, Calendar, RefreshCw, AlertCircle, ArrowUpRight } from 'lucide-react';
@@ -134,7 +135,7 @@ export default function Contributions() {
       <div style={{ maxWidth: 1152, margin: '0 auto', padding: '0 1.5rem' }}>
 
         <motion.div initial="hidden" animate={inView ? 'show' : 'hidden'} variants={fadeUp(0)} style={{ marginBottom: '4rem' }}>
-          <span className="section-label">05 — Contributions</span>
+          <ScrambleText className="section-label" text="05 — Contributions" />
           <div className="section-divider" style={{ marginTop: 12 }} />
         </motion.div>
 
