@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, PhoneOff, X, Cpu, Globe2, Zap } from 'lucide-react';
+import { Mic, PhoneOff, X, Globe2 } from 'lucide-react';
 import { Room, RoomEvent } from 'livekit-client';
 import { track } from '@vercel/analytics';
 
@@ -210,74 +210,104 @@ export default function VoiceWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95, transformOrigin: 'bottom right' }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'fixed',
               bottom: '6.5rem',
               zIndex: 100,
-              width: 'min(320px, calc(100vw - 32px))',
+              width: 'min(340px, calc(100vw - 32px))',
               right: 'clamp(1rem, 5vw, 2.5rem)',
-              background: '#FFFFFF',
-              borderRadius: '24px',
+              background: 'rgba(250,250,248,0.92)',
+              backdropFilter: 'blur(24px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+              borderRadius: '20px',
               border: '1px solid #E8E6E0',
-              boxShadow: '0 12px 40px rgba(0,0,0,0.12)',
+              boxShadow: '0 24px 64px -12px rgba(17,17,17,0.25), inset 0 1px 0 rgba(255,255,255,0.7)',
               overflow: 'hidden',
             }}
           >
-            <div style={{ background: '#111111', padding: '1.25rem', display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(196,97,74,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Cpu size={16} color="#C4614A" />
+            {/* Header */}
+            <div style={{ padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: 12, borderBottom: '1px solid rgba(232,230,224,0.7)' }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+                background: 'linear-gradient(135deg, #C4614A 0%, #9E4A36 100%)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(196,97,74,0.3), inset 0 1px 0 rgba(255,255,255,0.25)',
+              }}>
+                <Mic size={15} color="#FFF" />
               </div>
-              <div>
-                <p style={{ fontFamily: 'Fraunces', fontWeight: 600, fontSize: '0.95rem', color: '#FAFAF8', margin: 0 }}>Friday</p>
-                <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.55rem', color: '#A3A3A3', margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em' }}>AI Assistant</p>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontFamily: 'Fraunces', fontStyle: 'italic', fontWeight: 600, fontSize: '1.05rem', color: '#111111', margin: 0, lineHeight: 1.2 }}>friday.</p>
+                <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.52rem', color: '#A3A3A3', margin: 0, textTransform: 'uppercase', letterSpacing: '0.12em' }}>voice agent · livekit</p>
               </div>
+              {/* Status pill */}
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 5,
+                padding: '4px 10px', borderRadius: 99,
+                background: callState === 'active' ? 'rgba(45,125,82,0.1)' : callState === 'connecting' ? 'rgba(196,97,74,0.1)' : 'rgba(163,163,163,0.1)',
+                border: `1px solid ${callState === 'active' ? 'rgba(45,125,82,0.25)' : callState === 'connecting' ? 'rgba(196,97,74,0.25)' : 'rgba(163,163,163,0.25)'}`,
+              }}>
+                <span style={{
+                  width: 5, height: 5, borderRadius: '50%',
+                  background: callState === 'active' ? '#2D7D52' : callState === 'connecting' ? '#C4614A' : '#A3A3A3',
+                }} className={callState !== 'idle' ? 'animate-pulse' : ''} />
+                <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.52rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: callState === 'active' ? '#2D7D52' : callState === 'connecting' ? '#C4614A' : '#A3A3A3' }}>
+                  {callState === 'idle' ? 'idle' : callState === 'connecting' ? 'dialing' : 'live'}
+                </span>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                aria-label="Close panel"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#A3A3A3', padding: 4, display: 'flex', borderRadius: 8 }}
+              >
+                <X size={14} />
+              </button>
             </div>
 
-            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100px', height: '100px' }}>
-                {callState === 'active' && [1, 2].map((i) => (
+            {/* Body */}
+            <div style={{ padding: '1.5rem 1.25rem 1.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '96px', height: '96px' }}>
+                {callState === 'active' && [0, 1].map((i) => (
                   <motion.div
                     key={i}
-                    style={{ 
-                      position: 'absolute', 
-                      inset: 0, 
-                      borderRadius: '50%', 
-                      border: '1px solid #C4614A',
-                      pointerEvents: 'none',
-                      zIndex: 1
-                    }}
+                    style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid #C4614A', pointerEvents: 'none' }}
                     initial={{ scale: 1, opacity: 0.4 }}
-                    animate={{ scale: 1.4, opacity: 0 }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.8 }}
+                    animate={{ scale: 1.45, opacity: 0 }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 1 }}
                   />
                 ))}
+                {callState === 'connecting' && (
+                  <motion.div
+                    style={{ position: 'absolute', inset: -4, borderRadius: '50%', border: '2px solid transparent', borderTopColor: '#C4614A', pointerEvents: 'none' }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
+                  />
+                )}
                 <motion.button
                   onClick={toggleCall}
                   aria-label={callState === 'active' || callState === 'connecting' ? 'End call' : 'Start call with Friday'}
                   style={{
                     position: 'relative',
                     zIndex: 10,
-                    width: '80px',
-                    height: '80px',
+                    width: '76px',
+                    height: '76px',
                     borderRadius: '50%',
-                    background: (callState === 'active' || callState === 'connecting') ? '#111111' : '#C4614A',
-                    border: 'none',
+                    background: callState === 'active' ? '#111111' : callState === 'connecting' ? '#F4F2EE' : '#C4614A',
+                    border: callState === 'connecting' ? '1px solid #E8E6E0' : 'none',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
-                    boxShadow: '0 8px 24px rgba(196,97,74,0.2)',
+                    boxShadow: callState === 'idle' ? '0 8px 24px rgba(196,97,74,0.28)' : '0 4px 16px rgba(17,17,17,0.12)',
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {(callState === 'active' || callState === 'connecting') ? <PhoneOff size={28} color="#FFF" /> : <Mic size={28} color="#FFF" />}
+                  {callState === 'active' ? <PhoneOff size={24} color="#FFF" /> : <Mic size={26} color={callState === 'connecting' ? '#C4614A' : '#FFF'} />}
                 </motion.button>
               </div>
 
               <div style={{ textAlign: 'center', width: '100%' }}>
-                {callState !== 'connecting' && <SoundWave active={callState === 'active'} />}
-                
                 {callState === 'connecting' ? (
                   <div style={{
                     fontFamily: 'JetBrains Mono',
@@ -289,24 +319,32 @@ export default function VoiceWidget() {
                     textAlign: 'left',
                     width: '100%',
                     boxSizing: 'border-box',
-                    border: '1px solid rgba(196,97,74,0.15)',
+                    border: '1px solid rgba(196,97,74,0.2)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span className="animate-pulse" style={{ color: '#C4614A', fontWeight: 900 }}>&gt;</span>
-                      <span style={{ color: '#A3A3A3', fontSize: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Bootstrap Sequence</span>
+                      <span style={{ color: '#A3A3A3', fontSize: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>bootstrap sequence</span>
                     </div>
                     <span style={{ color: '#C4614A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {getLogMessage()}
                     </span>
                   </div>
                 ) : (
-                  <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.62rem', color: callState === 'active' ? '#C4614A' : '#A3A3A3', marginTop: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
-                    {callState === 'idle' && 'Click to start'}
-                    {callState === 'active' && `Friday Listening... ${formatTime(timeLeft)}`}
-                  </p>
+                  <>
+                    <SoundWave active={callState === 'active'} />
+                    <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.6rem', color: callState === 'active' ? '#C4614A' : '#A3A3A3', marginTop: '8px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
+                      {callState === 'idle' && 'tap to talk'}
+                      {callState === 'active' && `listening · ${formatTime(timeLeft)}`}
+                    </p>
+                    {callState === 'active' && (
+                      <p style={{ fontFamily: 'Inter', fontSize: '0.68rem', color: '#A3A3A3', marginTop: '6px' }}>
+                        try "go to projects" or "who is tanish"
+                      </p>
+                    )}
+                  </>
                 )}
                 {callError && (
                   <p style={{ fontFamily: 'JetBrains Mono', fontSize: '0.6rem', color: '#DC2626', marginTop: '8px', letterSpacing: '0.03em', textAlign: 'center' }}>
@@ -314,19 +352,17 @@ export default function VoiceWidget() {
                   </p>
                 )}
               </div>
+            </div>
 
-              <div style={{ width: '100%', height: '1px', background: '#F4F2EE' }} />
-
-              <div style={{ display: 'flex', gap: 12, width: '100%' }}>
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Globe2 size={12} color="#C4614A" />
-                  <span style={{ fontSize: '0.65rem', color: '#525252', fontFamily: 'Inter' }}>EN/HI</span>
-                </div>
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Zap size={12} color="#C4614A" />
-                  <span style={{ fontSize: '0.65rem', color: '#525252', fontFamily: 'Inter' }}>Autonomous</span>
-                </div>
-              </div>
+            {/* Footer microcopy */}
+            <div style={{
+              padding: '0.7rem 1.25rem', borderTop: '1px solid rgba(232,230,224,0.7)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+            }}>
+              <Globe2 size={11} color="#A3A3A3" />
+              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.52rem', color: '#A3A3A3', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                en/hi · autonomous · 120s cap
+              </span>
             </div>
           </motion.div>
         )}
